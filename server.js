@@ -82,6 +82,49 @@ app.post('/api/creators', async (req, res) => {
   return res.status(201).json(created);
 });
 
+const storageFile = path.join(__dirname, 'storage.json');
+let storageData = {};
+
+function loadStorageData() {
+  try {
+    if (fs.existsSync(storageFile)) {
+      storageData = JSON.parse(fs.readFileSync(storageFile, 'utf8') || '{}');
+    }
+  } catch (error) {
+    console.warn('Could not load storage data:', error.message);
+    storageData = {};
+  }
+}
+
+function saveStorageData() {
+  try {
+    fs.writeFileSync(storageFile, JSON.stringify(storageData, null, 2), 'utf8');
+  } catch (error) {
+    console.warn('Could not save storage data:', error.message);
+  }
+}
+
+loadStorageData();
+
+app.get('/api/storage', (req, res) => {
+  const prefix = req.query.prefix || '';
+  const keys = Object.keys(storageData).filter((key) => key.startsWith(prefix));
+  res.json(keys);
+});
+
+app.get('/api/storage/:key', (req, res) => {
+  const key = decodeURIComponent(req.params.key);
+  const value = key in storageData ? storageData[key] : null;
+  res.json({ key, value });
+});
+
+app.put('/api/storage/:key', (req, res) => {
+  const key = decodeURIComponent(req.params.key);
+  storageData[key] = req.body;
+  saveStorageData();
+  res.json({ ok: true });
+});
+
 const publicDir = path.join(__dirname, 'public');
 const legacyAssetsDir = path.join(__dirname, '..', 'Pixaretro_files');
 

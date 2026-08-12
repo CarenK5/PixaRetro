@@ -549,12 +549,12 @@ function keyFor(email){ return email.trim().toLowerCase().replace(/[^a-z0-9]/g,'
 function getStorageAdapter(){
   if (window.storage && typeof window.storage.get === 'function') return window.storage;
 
-  const backendBase = 'http://localhost:3001';
+  const backendBase = '/api';
 
   return {
     async get(key, shared){
       try {
-        const res = await fetch(`${backendBase}/api/storage/${encodeURIComponent(key)}`);
+        const res = await fetch(`${backendBase}/storage/${encodeURIComponent(key)}`);
         const data = await res.json();
         if (!data || data.value === null || data.value === undefined) return null;
         return { value: typeof data.value === 'string' ? data.value : JSON.stringify(data.value) };
@@ -566,7 +566,7 @@ function getStorageAdapter(){
     },
     async set(key, value, shared){
       try {
-        const res = await fetch(`${backendBase}/api/storage/${encodeURIComponent(key)}`, {
+        const res = await fetch(`${backendBase}/storage/${encodeURIComponent(key)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: value
@@ -580,7 +580,7 @@ function getStorageAdapter(){
     },
     async list(prefix, shared){
       try {
-        const res = await fetch(`${backendBase}/api/storage?prefix=${encodeURIComponent(prefix)}`);
+        const res = await fetch(`${backendBase}/storage?prefix=${encodeURIComponent(prefix)}`);
         const data = await res.json();
         return Array.isArray(data) ? data : [];
       } catch (error) {
