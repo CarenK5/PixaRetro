@@ -1,0 +1,834 @@
+body, html{
+background-color: #F1F1F3;
+}
+
+#page_logos{
+min-height: 110vh;
+}
+
+#logos{
+padding: 7em 2em 10em 2em;
+width: 100%;
+box-sizing: border-box;
+overflow: auto;
+}
+
+#logos .logo-wrapper, #variants .logo-wrapper{
+float: left;
+width: 20%;
+padding-top: 15%;
+height: 0;
+position: relative;
+cursor: pointer;
+}
+
+#variants .logo-wrapper{
+width: 50%;
+padding-top: 37.5%;
+}
+
+#logos .logo-outer, #variants .logo-outer{
+/*transition: box-shadow 0.5s, margin 0.5s, width 0.5s;
+box-shadow: 2px 1px 5px rgba(200, 220, 230, 0);*/
+overflow: hidden;
+border-radius: 0.5em;
+margin: 0;
+width: 95%;
+height: 95%;
+margin: 2.5%;
+position: absolute;
+top: 0;
+left: 0;
+}
+
+#logos .logo-wrapper:hover .logo-outer{
+width: 100%;
+height: 100%;
+margin: 0;
+box-shadow: 2px 1px 5px rgba(190, 210, 220, 1);
+}
+
+#variants .logo-wrapper:hover .logo-outer{
+width: 100%;
+height: 100%;
+margin: 0;
+box-shadow: 0px 0px 5px rgba(190, 210, 220, 0.25);
+}
+
+/*#loading_logos{
+background: transparent url(img/spinner_dark.svg) no-repeat;
+background-position: 50%;
+float: left;
+width: 100%;
+height: 10em;
+}*/
+
+/*#logos_scroll{
+overflow:hidden;
+padding-bottom: 12em;
+}*/
+
+/*#logos_scroll.loading_logos{
+background: transparent url(img/spinner_dark.svg) no-repeat;
+background-position: 50% 100%;
+}*/
+
+.logo-info{
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+/*background: rgba(0,12,48,0.9);*/
+/*transition: opacity 0.5s;*/
+color: #fff;
+font-size: 0.85em;
+padding: 1em 1.4em 1.5em 1.5em;
+box-sizing: border-box;
+}
+
+.logo-info .logo-info-inner{
+height: 73%;
+background: rgba(0,12,48,0.9);
+padding: 1em 2em 1.5em 1.5em;
+box-sizing: border-box;
+}
+
+.logo-info .title, .logo-info .description{
+display: block;
+font-size: 1.3em;
+white-space: nowrap;
+overflow: hidden;
+margin: 0.4em 0;
+}
+
+.logo-info .section{
+display: flex;
+gap: 0.5em;
+width: 100%;
+font-size: 1.2em;
+margin-bottom: 0.2em;
+}
+
+.logo-info em{
+font-style: normal;
+}
+
+.logo-info a{
+border-radius: 5px;
+height: 2em;
+display: block;
+color: #fff;
+line-height: 1.65em;
+padding: 0 0.5em;
+margin: 0.5em 0 0 0;
+white-space: nowrap;
+}
+
+
+.logo-info a span{
+max-width: 0;
+overflow: hidden;
+display: inline-block;
+vertical-align: middle;
+max-width: 12em;
+margin-left: 0.35em;
+}
+
+.logo-info a img{
+display: inline-block;
+width: 1em;
+height: 1em;
+vertical-align: middle;
+margin-top: 0.25em;
+margin-left: 0.1em;
+}
+
+.logo-wrapper:hover .logo-info{
+display: block;
+}
+
+.heart{
+position: absolute;
+cursor: pointer;
+bottom: 0.75em;
+right: 1em;
+z-index: 30;
+overflow: visible;
+padding: 0.5em;
+border-radius: 2em;
+box-sizing: content-box;
+}
+
+.heart svg{
+width: 1.3em;
+height: 1.3em;
+float: left;
+}
+
+.heart-expansion{
+float: left;
+overflow: hidden;
+max-width: 0;
+padding-left: 0;
+transition: max-width .6s, padding-left 0.6s;
+color: white;
+line-height: 1.2em;
+}
+
+.heart:hover{
+/*background-color: rgba(0,12,48,0.5);*/
+background-color: rgba(255,255,255,0.2);
+}
+
+.heart:hover .heart-expansion{
+max-width: 4rem;
+padding-left: 0.2em;
+}
+
+.dislike-hover{
+display: none;
+position: absolute;
+cursor: pointer;
+bottom: 3.2em;
+right: 1em;
+z-index: 30;
+overflow: visible;
+padding: 0.5em;
+border-radius: 2em;
+box-sizing: content-box;
+}
+
+.logo-wrapper:hover .dislike-hover{
+display: block;
+}
+
+.dislike-hover svg{
+width: 1.3em;
+height: 1.3em;
+float: left;
+opacity: 0.4;
+}
+
+.dislike-expansion{
+float: left;
+overflow: hidden;
+max-width: 0;
+padding-left: 0;
+transition: max-width .6s, padding-left 0.6s;
+color: white;
+line-height: 1.2em;
+}
+
+.dislike-hover:hover{
+background-color: rgba(255,255,255,0.2);
+}
+
+.dislike-hover:hover svg{
+opacity: 0.9;
+}
+.dislike-hover:hover .dislike-expansion{
+max-width: 4rem;
+padding-left: 0.2em;
+}
+
+.more-close{
+display: none;
+position: absolute;
+bottom: 0;
+left: 0;
+padding: 1.5em;
+z-index: 30;
+cursor: pointer;
+}
+
+.more-close img{
+width: 0.9em;
+height: 0.9em;
+}
+
+.info-link{
+font-size: 1.5em;
+padding: 0.2em;
+opacity: 0.5;
+}
+
+.info-link:hover{
+opacity: 1.0;
+}
+
+.name-link{
+color: #00ffbb;
+}
+
+.modal-dialog{
+    max-width:1000px;
+}
+.modal .modal-content {
+    border-radius: 0.5em;
+}
+
+#modal_info .close{
+opacity: 0.8;
+background-color: #08102e !important;
+position: fixed;
+z-index: 999;
+}
+
+#modal_info .close:hover{
+opacity: 1.0;
+}
+
+#top-nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4.5em;
+    margin: 0;
+    padding: 1em 0;
+    z-index: 99;
+}
+
+#top-nav .nav-item{
+    margin: 0 0.5em;
+}
+
+#page_loading{
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 999;
+font-weight: 300;
+color: #a7beff;
+text-align: center;
+}
+
+#page_loading h2{
+font-size: 1.2em;
+font-weight: 300;
+margin: 0;
+padding: 0;
+}
+
+#page_loading svg{
+position: fixed;
+width: 20em;
+top: 50%;
+left: 50%;
+margin-left: -10em;
+margin-top: -7em;
+}
+
+#loading_text{
+position: fixed;
+top: 50%;
+left: 50%;
+width: 20em;
+margin-left: -10em;
+margin-top: -1em;
+}
+
+#page_loading svg .animate-stroke{
+stroke-dasharray: 120;
+stroke-dashoffset: 120;
+animation: dash 6s ease-in-out forwards;
+}
+
+#page_loading svg .animate-fill{
+opacity: 0;
+animation: fadein 1s ease-in-out forwards;
+animation-delay: 6s;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadein {
+  to {
+    opacity: 1;
+  }
+}
+
+.btn-domain-badge {
+position: absolute;
+cursor: pointer;
+right: 15px;
+top: 15px;
+color: white;
+border-radius: 2rem;
+background-color: #687ae8;
+padding: 0.226rem 0.4814rem 0.325rem 0.4814rem;
+z-index: 30;
+}
+
+.btn-domain-badge:hover{
+color: white;
+background-color: #485ab8;
+}
+
+.btn-domain-badge img{
+float: left;
+margin: 0.35rem 0 0 0;
+}
+
+.btn-domain-badge .domain-expansion{
+float: left;
+overflow: hidden;
+max-width: 0;
+transition: max-width .6s;
+}
+
+.logo-wrapper:hover .btn-domain-badge .domain-expansion{
+max-width: 3rem;
+}
+
+.tag-input.ext-com input[type=checkbox]:checked+label{
+background-color: #0c9;
+}
+
+.tag-input.ext-co input[type=checkbox]:checked+label{
+background-color: #5eeae6;
+}
+
+.tag-input.ext-io input[type=checkbox]:checked+label{
+background-color: #edc569;
+}
+
+.tag-input.ext-ai input[type=checkbox]:checked+label{
+background-color: #ec5493;
+}
+
+.tag-input.ext-app input[type=checkbox]:checked+label{
+background-color: #36496d;
+}
+
+.tag-input.ext-org input[type=checkbox]:checked+label{
+background-color: #ae4bf5;
+}
+
+.btn-domain-badge.ext-com{
+background-color: #0c9;
+}
+
+.btn-domain-badge.ext-com:hover{
+background-color: #0a8;
+}
+
+.btn-domain-badge.ext-co{
+background-color: #5eeae6;
+}
+
+.btn-domain-badge.ext-co:hover{
+background-color: #3eaab6;
+}
+
+.btn-domain-badge.ext-io{
+background-color: #f7bc06;
+}
+
+.btn-domain-badge.ext-io:hover{
+background-color: #cd9509;
+}
+
+.btn-domain-badge.ext-ai{
+background-color: #ec5493;
+}
+
+.btn-domain-badge.ext-ai:hover{
+background-color: #cc2473;
+}
+
+.btn-domain-badge.ext-app{
+background-color: #36496d;
+}
+
+.btn-domain-badge.ext-app:hover{
+background-color: #06194d;
+}
+
+.btn-domain-badge.ext-org{
+background-color: #ae4bf5;
+}
+
+.btn-domain-badge.ext-org:hover{
+background-color: #8e0bc5;
+}
+
+/* premium */
+.premium .logo-inner{
+    background-color: #fff;
+}
+
+.premium .logo-inner img{
+    width: 84%;
+    height: auto;
+    margin: 14% 8%;
+}
+
+.premium .logo-inner.namelix img{
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.premium-label{
+    position: absolute;
+    bottom: 5%;
+    right: 4%;
+    z-index: 10;
+    background-color: #4A65BC;
+    color: #fff;
+    font-size: 0.95em;
+    padding: 0.2em 0.6em;
+    border-radius: 0.5em;
+    opacity: 0.5;
+}
+
+.btn-save{
+    display: none;
+}
+
+.logo-info a.btn-brandmark, .logo-info a.btn-dislike{
+    display: none;
+}
+
+.logo-info .section a.btn-register span{
+    display: inline-block;
+    max-width: 5rem;
+    padding-left: 0.35em;
+    transition: max-width .5s, padding-left 0.5s;
+    margin: 0;
+}
+
+.logo-info .section a.btn-register:hover{
+    position: relative;
+    z-index: 99;
+}
+
+.logo-info .section a.btn-register:hover span{
+    max-width: 5rem;
+    padding-left: 0.35em;
+}
+
+a.hover_underline:hover{
+text-decoration: underline;
+}
+
+#domain_list > div{
+white-space: nowrap;
+}
+
+@media only screen and (max-width : 1500px) {
+    .logo-info .section a.btn-register span{
+    max-width: 0;
+    padding-left: 0;
+    }
+}
+
+@media only screen and (max-width : 1250px) {
+    #logos .logo-wrapper{
+    width: 25%;
+    padding-top: 18.75%;
+    }
+}
+
+@media only screen and (max-width : 1150px) {
+    .logo-info .section a.btn-register em{
+        display: none;
+    }
+    .modal .modal-content {
+        border: 0;
+        border-radius: 0;
+    }
+    .modal-dialog{
+        margin:0 auto;
+        max-width: none;
+        width: 100%;
+    }
+    #variants{
+        padding-top: 85px;
+    }
+    .modal-body{
+        padding-top: 0;
+    }
+    #info_title{
+        position: fixed;
+        z-index: 990;
+        width: 100%;
+        margin: 0;
+        padding-top:25px;
+        margin-left: -1rem;
+        padding-left: 1rem;
+    }
+    #info_feedback_title{
+        margin-top:80px;
+    }
+    /*#variants .logo-info em{
+    display: inline;
+    }*/
+}
+
+@media only screen and (max-width : 991px) {
+    #logos .logo-wrapper{
+    width: 33.33%;
+    padding-top: 25%;
+    }
+/*    #variants .logo-info em{
+    display: none;
+    }*/
+    .logo-info .section a.btn-register span{
+    max-width: 5rem;
+    padding-left: 0.35em;
+    }
+}
+
+@media only screen and (max-width : 930px) {
+    .logo-info .section a.btn-register span{
+    max-width: 0;
+    padding-left: 0;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    #logos .logo-wrapper{
+    width: 50%;
+    padding-top: 37.5%;
+    }
+    #logos{
+    padding-left: 1em;
+    padding-right: 1em;
+    }
+    
+    #page_loading svg{
+    width: 15em;
+    margin-left: -7.5em;
+    }
+    
+    #loading_text{
+    font-size: 0.8em;
+    }
+    #variants{
+        padding-top: 35px;
+    }
+    .logo-info a.btn-more, .logo-info a.btn-register{
+        flex-grow: 2;
+    }
+    .logo-info a.btn-brandmark, .logo-info a.btn-dislike{
+        flex-grow: 1;
+    }
+    .logo-info .section a.btn-register span{
+    max-width: 5rem;
+    padding-left: 0.35em;
+    }
+    #domain_list{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.8em;
+    }
+    #domain_list > div{
+    flex: 1;
+    flex-basis: 10em;
+    margin-bottom: 1em;
+    }
+}
+
+@media only screen and (max-width : 620px) {
+    .logo-info .section a.btn-register span{
+    max-width: 0;
+    padding-left: 0;
+    }
+}
+
+@media only screen and (max-width : 575px) {
+    #variants .logo-wrapper{
+    width: 100%;
+    padding-top: 75%;
+    }
+    #modal_dislike .modal-body{
+    margin: 2em;
+    }
+    #modal_dislike input{
+    font-size: 16px;
+    }
+}
+
+@media only screen and (min-width : 496px) {
+    /*.logo-wrapper:hover .heart svg .outline{
+    fill: #fff !important;
+    }*/
+    .logo-buttons{
+    position: absolute;
+    bottom: 0.85em;
+    }
+    .logo-buttons .section{
+    display: block;
+    }
+    .logo-buttons .section, .logo-buttons .section a{
+    float: left;
+    width: auto;
+    }
+    .logo-buttons .section a{
+    margin-right: 0.5em;
+    }
+/*    .logo-wrapper:hover .logo .logo-inner{
+    background-color: #000C30 !important;
+    }
+    .logo-wrapper:hover .logo .logo-inner svg path, .logo-wrapper:hover .logo .logo-inner svg polygon{
+    fill: #ffffff !important;
+    opacity: 0.5 !important;
+    }*/
+}
+
+@media only screen and (max-width : 495px) {
+    #logos{
+    padding-left: 0;
+    padding-right: 0;
+    }
+    .logo-wrapper.show .heart svg .outline{
+    fill: #fff !important;
+    }
+    #logos .logo-wrapper:hover .logo-outer, #variants .logo-wrapper:hover .logo-outer{
+    width: 96%;
+    height: 96%;
+    margin: 2%;
+    box-shadow: none;
+    }
+    #logos .logo-outer, #variants .logo-outer{
+    width: 96%;
+    height: 96%;
+    margin: 2%;
+    }
+
+    .heart{
+    bottom: 0.35em;
+    }
+
+    .more-close{
+    display: block;
+    padding: 1em 1.5em;
+    }
+
+    .logo-info{
+    display: none;
+    }
+
+    .logo-info .description{
+    color: #ffffff !important;
+    }
+
+    #variants .logo-info{
+    font-size: 0.9em;
+    }
+
+    .logo-wrapper:hover .logo-info{
+    display: none;
+    }
+    .logo-wrapper .logo-info.show{
+    display: block;
+    }
+    #logos .logo-wrapper.show .logo-outer{
+    width: 104%;
+    height: 104%;
+    margin: -2% 0 0 -2%;
+    }
+    .logo-info{
+    background: rgba(0,12,48,0.9);
+    }
+    .logo-info a{
+    width: 50%;
+    flex-grow: 1;
+    }
+    .logo-info a.btn-more em{
+    display: none;
+    }
+    .heart-expansion{
+    display: none;
+    }
+    .logo-info .section a.btn-register span{
+    display: inline;
+    max-width: 10rem;
+    padding-left: 0.35em;
+    }
+    
+    #variants .logo-info a em{
+    display: inline;
+    }
+    .logo-info a.btn-brandmark, .logo-info a.btn-dislike{
+    display: block;
+    }
+    .dislike-hover, .logo-wrapper:hover .dislike-hover{
+    display: none;
+    }
+}
+
+@media only screen and (max-width : 430px) {
+    .logo-info{
+    font-size: 0.9em;
+    padding: 1em 1em 1.5em 1em;
+    }
+    .logo-info .section{
+    margin: 0;
+    }
+    .logo-info a.btn-more em{
+    display: none;
+    }
+    .logo-info a.btn-dislike{
+    width: auto;
+    flex-grow: 1;
+    text-align: center;
+    }
+    .logo-info a.btn-dislike span{
+    display: none;
+    }
+    .logo-info a.btn-register{
+    width: auto;
+    flex-grow: 2;
+    }
+    .logo-info .description{
+    font-size: 1.2em;
+    margin: 0 0 -0.2em 0;
+    }
+    .btn-domain-badge{
+    top: 10px;
+    right: 10px;
+    padding: 0 0.255rem 0.1rem 0.255rem;
+    }
+    .heart{
+    bottom: 5px;
+    right: 10px;
+    padding: 0.5em;
+    }
+    .more-close{
+    padding: 0.6em 1.3em 1em 1.3em;
+    }
+}
+
+@media only screen and (max-width : 385px) {
+    .logo-info{
+    font-size: 0.8em;
+    padding: 1em 1em 1.5em 1em;
+    }
+    .logo-info .description{
+    font-size: 1.1em;
+    margin: 0.15em 0;
+    }
+}
+
+@media only screen and (max-width : 355px) {
+    #logos{
+    padding-left: 0;
+    padding-right: 0;
+    }
+    #logos .logo-wrapper{
+    width: 80%;
+    padding-top: 60%;
+    margin-left: 10%;
+    }
+}

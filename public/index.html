@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PixaRetro — Book a photographer or videographer on demand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14171A; --panel:#1B1F23; --panel-2:#20252A;
+    --paper:#F2EEE2; --paper-dim:#E7E0CC;
+    --amber:#FF6B1A; --brick:#B8390F; --moss:#9A5518;
+    --text:#F2EEE2; --text-muted:#9BA3A6; --ink-muted:#5B6469;
+    --line:rgba(242,238,226,0.14); --line-dark:rgba(20,23,26,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--ink); color:var(--text); font-family:'IBM Plex Sans',sans-serif; line-height:1.5;}
+  h1,h2,h3{font-family:'Bebas Neue',sans-serif; letter-spacing:0.5px; margin:0; line-height:0.95;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;} button{font-family:inherit; cursor:pointer;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:var(--amber); display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:16px; height:1px; background:var(--amber); display:inline-block;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 24px; border-radius:100px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; border:1px solid transparent; transition:transform .15s ease;}
+  .btn:active{transform:scale(0.97);} .btn:disabled{opacity:0.5; cursor:not-allowed;}
+  .btn-amber{background:var(--amber); color:#1A0D00;} .btn-amber:hover{background:#ff8a3d;}
+  .btn-ghost{background:transparent; color:var(--text); border-color:var(--line);} .btn-ghost:hover{border-color:var(--amber); color:var(--amber);}
+  .btn-dark{background:var(--ink); color:var(--paper); border-color:var(--line-dark);} .btn-dark:hover{background:#000;}
+  .btn-sm{padding:8px 16px; font-size:11px;}
+  .btn-danger{background:transparent; color:var(--brick); border-color:var(--brick);}
+
+  header{position:sticky; top:0; z-index:50; background:rgba(20,23,26,0.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 28px;}
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer;}
+  .brand-mark{width:34px; height:34px; border-radius:50%; border:2px solid var(--amber); display:flex; align-items:center; justify-content:center;}
+  .brand-mark::after{content:""; width:10px; height:10px; border-radius:50%; background:var(--amber);}
+  .brand-text{font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px;}
+  .brand-sub{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; margin-top:-2px;}
+  .nav-links{display:flex; gap:24px; font-size:14px; color:var(--text-muted); align-items:center;}
+  .nav-links a{text-decoration:none; cursor:pointer;} .nav-links a:hover{color:var(--paper);}
+  .nav-ctas{display:flex; gap:10px; align-items:center;}
+  .who-chip{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-muted); padding:8px 14px; border:1px solid var(--line); border-radius:100px;}
+  .icon-btn{background:none; border:1px solid var(--line); color:var(--text); width:38px; height:38px; border-radius:100px; display:flex; align-items:center; justify-content:center;}
+  .icon-btn:hover{border-color:var(--amber); color:var(--amber);}
+
+  section{padding:88px 0;}
+  .section-head{max-width:640px; margin-bottom:44px;}
+  .section-head h2{font-size:clamp(32px,5vw,50px); margin-top:12px; color:var(--paper);}
+  .section-head p{color:var(--text-muted); font-size:15.5px; margin-top:14px; max-width:540px;}
+
+  .hero{position:relative; margin:20px 20px 0; border:1px solid var(--line); min-height:560px; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 40%, #22272c 0%, #14171A 70%);}
+  .vf-corner{position:absolute; width:30px; height:30px; border-color:var(--paper); opacity:0.5;}
+  .vf-corner.tl{top:18px; left:18px; border-top:2px solid; border-left:2px solid;}
+  .vf-corner.tr{top:18px; right:18px; border-top:2px solid; border-right:2px solid;}
+  .vf-corner.bl{bottom:18px; left:18px; border-bottom:2px solid; border-left:2px solid;}
+  .vf-corner.br{bottom:18px; right:18px; border-bottom:2px solid; border-right:2px solid;}
+  .vf-readout{position:absolute; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:var(--text-muted); display:flex; align-items:center; gap:8px;}
+  .vf-readout.top-left{top:32px; left:40px;} .vf-readout.top-right{top:32px; right:40px;}
+  .vf-readout.bottom-left{bottom:32px; left:40px;} .vf-readout.bottom-right{bottom:32px; right:40px;}
+  .rec-dot{width:8px; height:8px; border-radius:50%; background:var(--brick); animation:blink 1.4s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.15;}}
+  .hero-content{position:relative; z-index:2; text-align:center; max-width:680px; padding:56px 24px;}
+  .hero-content .eyebrow{justify-content:center; margin-bottom:20px;} .hero-content .eyebrow::before{display:none;}
+  .hero h1{font-size:clamp(44px,8vw,86px); color:var(--paper);} .hero h1 span{color:var(--amber);}
+  .hero p{font-size:16.5px; color:var(--text-muted); max-width:500px; margin:20px auto 30px;}
+  .hero-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  @media (max-width:600px){.vf-readout,.vf-corner{display:none;} .hero{min-height:480px;}}
+
+  .filmstrip{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .frame{background:var(--ink); padding:34px 28px;}
+  .frame-count{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--amber);}
+  .frame h3{font-size:28px; color:var(--paper); margin:14px 0 10px;}
+  .frame p{color:var(--text-muted); font-size:14px;}
+  @media (max-width:860px){.filmstrip{grid-template-columns:1fr;}}
+
+  .price-panel{background:var(--panel); border:1px solid var(--line); padding:36px; display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center;}
+  .price-row{display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono',monospace; font-size:13.5px;}
+  .price-row.total{border-bottom:none; padding-top:16px; font-size:15px; color:var(--amber);}
+  .price-row .label{color:var(--text-muted);} .price-row .val{color:var(--paper);}
+  @media (max-width:760px){.price-panel{grid-template-columns:1fr;}}
+
+  .tier-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .tier-card{background:var(--panel); padding:26px 22px;}
+  .tier-name{font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:1px; color:var(--amber); margin-bottom:14px;}
+  .tier-rate{font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--paper); margin-bottom:16px;}
+  .tier-rate span{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted); letter-spacing:0;}
+  .tier-row{display:flex; justify-content:space-between; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--text-muted); padding:7px 0; border-top:1px solid var(--line);}
+  @media (max-width:900px){.tier-grid{grid-template-columns:repeat(2,1fr);} .tier-card:last-child{grid-column:1/-1;}}
+  @media (max-width:520px){.tier-grid{grid-template-columns:1fr;} .tier-card:last-child{grid-column:auto;}}
+
+  footer{padding:80px 0 40px; text-align:center;}
+  footer p{color:var(--text-muted); margin:16px auto 28px; max-width:420px; font-size:14px;}
+  .foot-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-muted); border-top:1px solid var(--line); padding-top:22px; margin-top:60px;}
+
+  /* ===== App shell (post-login) ===== */
+  #appView{display:none; background:var(--paper); color:var(--ink); min-height:calc(100vh - 67px);}
+  #appView .wrap{padding-top:36px; padding-bottom:80px;}
+  .app-tabs{display:flex; gap:8px; margin-bottom:32px; border-bottom:1px solid var(--line-dark); padding-bottom:0;}
+  .app-tab{font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:0.5px; padding:12px 4px; margin-right:22px; background:none; border:none; color:#8a8474; border-bottom:2px solid transparent;}
+  .app-tab.active{color:var(--ink); border-color:var(--brick);}
+  .app-title{font-size:clamp(30px,5vw,44px); margin-bottom:6px;}
+  .app-sub{color:#5B554A; font-size:14px; margin-bottom:30px;}
+
+  .filters{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:30px;}
+  .match-banner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; background:#FBEAD9; border:1px solid #F0D0AC; padding:20px 24px; margin-bottom:24px;}
+  .match-card{background:#fff; border:1px solid var(--line-dark); padding:14px; display:flex; gap:14px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;}
+  .match-card .match-thumb{width:76px; height:76px; flex:none; background-size:cover; background-position:center; border-radius:2px;}
+  .match-card .match-photos{display:flex; gap:6px; margin-top:8px;}
+  .match-card .match-photos div{width:34px; height:34px; background-size:cover; background-position:center; border-radius:2px;}
+  .match-fit{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; color:var(--moss); background:#FBEAD9; padding:3px 10px; border-radius:100px;}
+  .chip{font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 16px; border-radius:100px; border:1px solid var(--line-dark); background:transparent; color:#5B554A; text-transform:uppercase;}
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .search-row{display:flex; gap:10px; margin-left:auto; flex-wrap:wrap;}
+  .search-row input, .search-row select{font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:9px 14px; border-radius:100px; border:1px solid var(--line-dark); background:#fff; color:var(--ink);}
+
+  .contact-sheet{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:18px;}
+  .frame-card{background:var(--ink); padding:10px 10px 16px;}
+  .thumb{aspect-ratio:4/5; margin-bottom:12px; position:relative; overflow:hidden; background-size:cover; background-position:center; display:flex; align-items:flex-end; padding:10px;}
+  .thumb .tag{font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#fff; background:rgba(0,0,0,0.4); padding:4px 8px; border-radius:100px;}
+  .card-body{color:var(--paper); padding:0 4px;}
+  .card-body .name{font-weight:600; font-size:15px;}
+  .card-body .meta{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-muted); margin-top:3px;}
+  .card-body .foot{display:flex; justify-content:space-between; align-items:center; margin-top:12px;}
+  .card-body .price{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--amber);}
+  .empty-state{grid-column:1/-1; text-align:center; padding:60px 20px; color:#8a8474; font-family:'IBM Plex Mono',monospace; font-size:13px; border:1px dashed var(--line-dark);}
+
+  .card{background:#fff; border:1px solid var(--line-dark); padding:24px; margin-bottom:16px;}
+  .card .row{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;}
+  .status-pill{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; padding:5px 12px; border-radius:100px;}
+  .status-requested{background:#FFF1CC; color:#8A6300;}
+  .status-accepted{background:#FBEAD9; color:var(--moss);}
+  .status-declined{background:#F5DEDA; color:var(--brick);}
+  .status-completed{background:#E6E1D3; color:#3A3527;}
+
+  .form-panel{background:#fff; border:1px solid var(--line-dark); padding:30px; max-width:640px;}
+  .field{margin-bottom:18px;} .field:last-child{margin-bottom:0;}
+  .field label{display:block; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#5B554A; margin-bottom:7px;}
+  .field select, .field input, .field textarea{width:100%; padding:11px 12px; border:1px solid #C9C2AE; font-family:'IBM Plex Sans',sans-serif; font-size:14px; background:#fff; color:var(--ink); border-radius:2px;}
+  .field textarea{resize:vertical; min-height:70px;}
+  .tag-checks{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag-check{font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:8px 14px; border:1px solid #C9C2AE; border-radius:100px; cursor:pointer; user-select:none;}
+  .tag-check.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .photo-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+  .photo-slot{width:90px; height:90px; border:1px dashed #C9C2AE; display:flex; align-items:center; justify-content:center; position:relative; background-size:cover; background-position:center; font-family:'IBM Plex Mono',monospace; font-size:10px; color:#8a8474; text-align:center; overflow:hidden;}
+  .photo-slot .rm{position:absolute; top:2px; right:2px; background:rgba(0,0,0,0.6); color:#fff; border:none; width:18px; height:18px; font-size:11px; line-height:1;}
+  .msg{font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:10px 14px; border-radius:2px; margin-bottom:16px;}
+  .msg.err{background:#F5DEDA; color:var(--brick);} .msg.ok{background:#FBEAD9; color:var(--moss);}
+  .loading{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:#8a8474; padding:20px 0;}
+
+  /* ===== Modals ===== */
+  .modal-overlay{position:fixed; inset:0; background:rgba(10,11,12,0.78); z-index:100; display:none; align-items:flex-start; justify-content:center; padding:60px 20px; overflow-y:auto;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--paper); color:var(--ink); width:100%; max-width:480px; padding:34px; position:relative;}
+  .modal-close{position:absolute; top:16px; right:16px; background:none; border:none; font-size:20px; color:#777;}
+  .modal h3{font-size:28px; margin-bottom:4px;}
+  .modal .sub{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--brick); text-transform:uppercase; margin-bottom:22px;}
+  .auth-toggle{display:flex; gap:6px; margin-bottom:22px; background:#EAE4D2; padding:4px; border-radius:100px;}
+  .auth-toggle button{flex:1; padding:9px; border:none; background:none; border-radius:100px; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; color:#5B554A;}
+  .auth-toggle button.active{background:var(--ink); color:#fff;}
+  .role-toggle{display:flex; gap:10px; margin-bottom:18px;}
+  .role-toggle button{flex:1; padding:14px; border:1px solid #C9C2AE; background:#fff; font-family:'IBM Plex Mono',monospace; font-size:12px; text-transform:uppercase; border-radius:2px;}
+  .role-toggle button.active{border-color:var(--ink); background:var(--ink); color:#fff;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav wrap">
+    <a class="brand" onclick="showLanding()">
+      <span class="brand-mark"></span>
+      <span><span class="brand-text">PIXARETRO</span><br><span class="brand-sub">Creator Marketplace</span></span>
+    </a>
+    <nav class="nav-links" id="navLoggedOut">
+      <a onclick="scrollToId('how')">How it works</a>
+      <a onclick="scrollToId('wishlistPreviewSection')">Wishlist</a>
+      <a onclick="scrollToId('pricing')">Pricing</a>
+    </nav>
+    <div class="nav-ctas" id="navLoggedOutCtas">
+      <button class="btn btn-ghost" onclick="openAuth('login')">Log In</button>
+      <button class="btn btn-amber" onclick="openAuth('signup')">Sign Up</button>
+    </div>
+    <div class="nav-ctas" id="navLoggedIn" style="display:none;">
+      <button class="icon-btn" id="exploreNavBtn" onclick="openExplore()" title="Explore content" style="display:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      </button>
+      <span class="who-chip mono" id="whoChip"></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== LANDING (logged out) ===================== -->
+<div id="landingView">
+  <section style="padding:0;">
+    <div class="hero">
+      <div class="vf-corner tl"></div><div class="vf-corner tr"></div><div class="vf-corner bl"></div><div class="vf-corner br"></div>
+      <div class="vf-readout top-left"><span class="rec-dot"></span> <span id="rec-timer">00:00:00</span></div>
+      <div class="vf-readout top-right">f/2.8&nbsp;&nbsp;1/125&nbsp;&nbsp;ISO 400</div>
+      <div class="vf-readout bottom-left">PIXARETRO // CREATOR MARKETPLACE</div>
+      <div class="vf-readout bottom-right">FOCUS: CREATORS</div>
+      <div class="hero-content">
+        <div class="eyebrow">On demand · Vetted · Local</div>
+        <h1>SHOOT<br><span>ON DEMAND.</span></h1>
+        <p>Post what you need, get matched with a vetted photographer or videographer nearby, and get gallery-ready content back.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-amber" onclick="openAuth('signup','client')">Find a Creator</button>
+          <button class="btn btn-ghost" onclick="openAuth('signup','pro')">Join as a Pro</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The process</div>
+        <h2>Three frames. One shoot.</h2>
+        <p>No cold DMs, no scrolling unrelated portfolios. Sign up, get matched, get your gallery.</p>
+      </div>
+      <div class="filmstrip">
+        <div class="frame"><div class="frame-count">FRAME 01/03</div><h3>Post the brief</h3><p>Content type, location, date, and budget — takes about two minutes.</p></div>
+        <div class="frame"><div class="frame-count">FRAME 02/03</div><h3>Get matched</h3><p>Browse real portfolios and request the pro whose work fits your brief.</p></div>
+        <div class="frame"><div class="frame-count">FRAME 03/03</div><h3>Shoot &amp; deliver</h3><p>Your pro shoots and delivers. You track every booking from your dashboard.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How pricing works</div>
+        <h2>You set the budget. Pros quote within it.</h2>
+        <p>There's no fixed price list — every shoot is different. Set what you're willing to spend, and PixaRetro surfaces pros whose rate already fits it.</p>
+      </div>
+      <div class="filmstrip">
+        <div class="frame">
+          <div class="frame-count">STEP 01</div>
+          <h3>Set your budget</h3>
+          <p>Tell us your content type and what you're comfortable spending — no need to guess a "going rate."</p>
+        </div>
+        <div class="frame">
+          <div class="frame-count">STEP 02</div>
+          <h3>See who fits it</h3>
+          <p>We only surface pros whose quoted rate is at or under your number, portfolio included.</p>
+        </div>
+        <div class="frame">
+          <div class="frame-count">STEP 03</div>
+          <h3>One clear price</h3>
+          <p>Whatever rate you agree on with your pro is what you pay. No line items, no surprise charges added at checkout.</p>
+        </div>
+      </div>
+      <div style="margin-top:28px; display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+        <p style="color:var(--text-muted); font-size:14px; max-width:480px; margin:0;">Pros set their own rate on their portfolio. You'll always see the exact quote before you book — nothing is charged until you approve.</p>
+        <button class="btn btn-amber" onclick="openAuth('signup','client')">Sign Up as a Client</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="wishlistPreviewSection" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The community wishlist</div>
+        <h2>See what creators want shot.</h2>
+        <p>Anyone can post a wish for content they want made — pros browse it for open opportunities, and every post nudges the next creator to post theirs.</p>
+      </div>
+      <div id="landingWishlist" class="contact-sheet" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));"></div>
+      <div style="margin-top:26px;">
+        <button class="btn btn-ghost" onclick="openAuth('signup','client')">Post Your Own Wish</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="eyebrow" style="justify-content:center;">Ready when you are</div>
+      <h2 style="font-size:clamp(34px,6vw,60px);">POST YOUR<br>FIRST SHOOT.</h2>
+      <p>Join the creators and pros already using PixaRetro.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="btn btn-amber" onclick="openAuth('signup','client')">Sign Up as a Client</button>
+        <button class="btn btn-ghost" onclick="openAuth('signup','pro')">Sign Up as a Pro</button>
+      </div>
+      <div class="foot-bottom wrap" style="padding-left:0; padding-right:0;">
+        <span>© 2026 PixaRetro. A prototype marketplace — demo data is visible to anyone using this app.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===================== APP (logged in) ===================== -->
+<div id="appView">
+  <div class="wrap">
+
+    <!-- CLIENT DASHBOARD -->
+    <div id="clientDash" style="display:none;">
+      <div class="app-title">Client Dashboard</div>
+      <div class="app-sub" id="clientGreeting"></div>
+      <div class="app-tabs">
+        <button class="app-tab active" data-tab="browse" onclick="setClientTab('browse')">Browse Creators</button>
+        <button class="app-tab" data-tab="bookings" onclick="setClientTab('bookings')">My Bookings</button>
+        <button class="app-tab" data-tab="wishlist" onclick="setClientTab('wishlist')">Community Wishlist</button>
+      </div>
+
+      <div id="clientBrowseTab">
+        <div class="match-banner">
+          <div>
+            <div class="mono" style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--brick);">Not sure where to start?</div>
+            <div style="font-size:15px; font-weight:600; margin-top:4px;">Tell us your budget — we'll suggest pros who fit it.</div>
+          </div>
+          <button class="btn btn-dark" onclick="openMatchModal()">Find Matches</button>
+        </div>
+        <div class="filters">
+          <button class="chip active" data-filter="All">All</button>
+          <button class="chip" data-filter="Photo">Photo</button>
+          <button class="chip" data-filter="Video">Video</button>
+          <button class="chip" data-filter="Reels">Reels &amp; Social</button>
+          <button class="chip" data-filter="Product">Product</button>
+          <button class="chip" data-filter="Events">Events</button>
+          <div class="search-row">
+            <input type="text" id="searchInput" placeholder="Search name or style…" oninput="renderPortfolios()">
+            <select id="cityFilter" onchange="renderPortfolios()"><option value="All">All cities</option></select>
+            <button class="btn btn-dark btn-sm" onclick="loadAndRenderPortfolios()">Refresh</button>
+          </div>
+        </div>
+        <div id="portfolioLoading" class="loading">Loading portfolios…</div>
+        <div class="contact-sheet" id="creatorGrid"></div>
+      </div>
+
+      <div id="clientBookingsTab" style="display:none;">
+        <div id="clientBookingsLoading" class="loading">Loading your bookings…</div>
+        <div id="clientBookingsList"></div>
+      </div>
+
+      <div id="clientWishlistTab" style="display:none;">
+        <div class="form-panel" style="margin-bottom:34px;">
+          <div id="wishMsg"></div>
+          <div class="field"><label>Content type</label>
+            <select id="wishType"><option>Photo</option><option>Video</option><option>Reels</option><option>Product</option><option>Events</option></select>
+          </div>
+          <div class="field"><label>City</label><input type="text" id="wishCity" placeholder="e.g. Austin"></div>
+          <div class="field"><label>Describe what you want shot</label><textarea id="wishDescription" placeholder="e.g. Looking for a moody, film-style reel for a coffee shop launch"></textarea></div>
+          <div class="field"><label>Inspo / reference link (optional)</label><input type="text" id="wishInspoLink" placeholder="Instagram, TikTok, Pinterest, etc."></div>
+          <button class="btn btn-dark" onclick="postWish()">Post to Wishlist</button>
+        </div>
+        <div id="clientWishlistLoading" class="loading">Loading the wishlist…</div>
+        <div class="contact-sheet" id="clientWishlistList" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));"></div>
+      </div>
+    </div>
+
+    <!-- PRO DASHBOARD -->
+    <div id="proDash" style="display:none;">
+      <div class="app-title">Pro Dashboard</div>
+      <div class="app-sub" id="proGreeting"></div>
+      <div class="mono" style="font-size:11.5px; color:#8a8474; margin:-18px 0 26px;">You keep 85% of every booking · PixaRetro's 15% service fee is deducted automatically at payout.</div>
+      <div class="app-tabs">
+        <button class="app-tab active" data-tab="portfolio" onclick="setProTab('portfolio')">My Portfolio</button>
+        <button class="app-tab" data-tab="requests" onclick="setProTab('requests')">Booking Requests</button>
+        <button class="app-tab" data-tab="wishlist" onclick="setProTab('wishlist')">Community Wishlist</button>
+      </div>
+
+      <div id="proPortfolioTab">
+        <div class="form-panel">
+          <div id="portfolioMsg"></div>
+          <div class="field">
+            <label>Content types you shoot</label>
+            <div class="tag-checks" id="tagChecks">
+              <span class="tag-check" data-tag="Photo">Photo</span>
+              <span class="tag-check" data-tag="Video">Video</span>
+              <span class="tag-check" data-tag="Reels">Reels</span>
+              <span class="tag-check" data-tag="Product">Product</span>
+              <span class="tag-check" data-tag="Events">Events</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>City</label>
+            <input type="text" id="proCity" placeholder="e.g. Austin">
+          </div>
+          <div class="field">
+            <label>Base rate per shoot (USD)</label>
+            <input type="number" id="proBaseRate" placeholder="e.g. 200">
+          </div>
+          <div class="field">
+            <label>Hours included</label>
+            <input type="text" id="proHours" placeholder="e.g. Up to 2 hours">
+          </div>
+          <div class="field">
+            <label>Commercial / ad usage add-on (USD) — leave blank if not offered</label>
+            <input type="number" id="proCommercialRate" placeholder="e.g. 150">
+          </div>
+          <div class="field">
+            <label>Rush / same-day delivery add-on (USD) — leave blank if not offered</label>
+            <input type="number" id="proRushFee" placeholder="e.g. 75">
+          </div>
+          <div class="field">
+            <label>Experience level</label>
+            <div style="background:#F2EEE2; border:1px solid #C9C2AE; padding:12px 14px; display:flex; justify-content:space-between; align-items:center;">
+              <span id="proLevelDisplay" style="font-weight:600; font-size:14px;">Emerging</span>
+              <span class="mono" id="proCompletedDisplay" style="font-size:11px; color:#8a8474;">0 completed shoots</span>
+            </div>
+            <div class="mono" style="font-size:10.5px; color:#8a8474; margin-top:6px;">Earned automatically as you complete bookings — Emerging (0–2), Experienced (3–9), Expert (10+). Not something you set yourself.</div>
+          </div>
+          <div class="field">
+            <label>Specialty / one-line pitch</label>
+            <textarea id="proSpecialty" placeholder="e.g. Editorial-style lifestyle photography"></textarea>
+          </div>
+          <div class="field">
+            <label>Portfolio photos (up to 3)</label>
+            <div class="photo-row" id="photoRow"></div>
+            <input type="file" id="photoInput" accept="image/*" style="margin-top:10px;" onchange="handlePhotoUpload(event)">
+          </div>
+          <button class="btn btn-dark" onclick="savePortfolio()">Save Portfolio</button>
+        </div>
+      </div>
+
+      <div id="proRequestsTab" style="display:none;">
+        <div id="proRequestsLoading" class="loading">Loading booking requests…</div>
+        <div id="proRequestsList"></div>
+      </div>
+
+      <div id="proWishlistTab" style="display:none;">
+        <div id="proWishlistLoading" class="loading">Loading the wishlist…</div>
+        <div class="contact-sheet" id="proWishlistList" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== AUTH MODAL ===================== -->
+<div class="modal-overlay" id="authOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuth()">✕</button>
+    <div class="sub">Prototype account — don't use a real password</div>
+    <h3 id="authTitle">Sign Up</h3>
+    <div class="auth-toggle">
+      <button id="toggleSignup" class="active" onclick="setAuthMode('signup')">Sign Up</button>
+      <button id="toggleLogin" onclick="setAuthMode('login')">Log In</button>
+    </div>
+    <div id="signupFields">
+      <div class="role-toggle">
+        <button id="roleClient" class="active" onclick="setRole('client')">I need a shoot</button>
+        <button id="rolePro" onclick="setRole('pro')">I'm a pro</button>
+      </div>
+      <div class="field"><label>Name</label><input type="text" id="suName" placeholder="Your name"></div>
+      <div class="field"><label>City</label><input type="text" id="suCity" placeholder="e.g. Austin"></div>
+    </div>
+    <div class="field"><label>Email</label><input type="email" id="authEmail" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="authPassword" placeholder="Anything works — this is a demo"></div>
+    <div id="authMsg"></div>
+    <button class="btn btn-amber" style="width:100%;" id="authSubmit" onclick="submitAuth()">Create Account</button>
+  </div>
+</div>
+
+<!-- ===================== REQUEST BOOKING MODAL ===================== -->
+<div class="modal-overlay" id="requestOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRequestModal()">✕</button>
+    <div class="sub">Request a shoot</div>
+    <h3 id="requestProName">Pro Name</h3>
+    <div id="requestRateNote" class="mono" style="font-size:11.5px; color:#5B554A; margin-bottom:18px;"></div>
+    <div class="field"><label>Content type</label><select id="reqType"></select></div>
+    <div class="field"><label>Date</label><input type="date" id="reqDate"></div>
+    <div class="field">
+      <label>Usage rights</label>
+      <select id="reqUsage" onchange="updateEstimatedTotal()">
+        <option value="personal">Personal &amp; social use</option>
+        <option value="commercial">Commercial / ad use</option>
+      </select>
+    </div>
+    <div class="field" id="reqRushField">
+      <label><input type="checkbox" id="reqRush" onchange="updateEstimatedTotal()" style="width:auto; margin-right:6px;"> Add rush / same-day delivery</label>
+    </div>
+    <div class="field">
+      <div class="mono" style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:#5B554A; margin-bottom:7px;">Total price</div>
+      <div id="reqTotal" style="font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--brick);"></div>
+      <div class="mono" style="font-size:10.5px; color:#8a8474; margin-top:4px;">Fixed by the pro — no back-and-forth. They'll simply accept or decline at this price.</div>
+    </div>
+    <div class="field"><label>Message</label><textarea id="reqMessage" placeholder="A line or two about the shoot…"></textarea></div>
+    <div class="field">
+      <label>Inspo / reference (optional)</label>
+      <input type="text" id="reqInspoLink" placeholder="Paste a link — Instagram, TikTok, Pinterest, etc.">
+      <div class="mono" style="font-size:10.5px; color:#8a8474; margin-top:6px;">Link instead of uploading a file — quicker for you, and it's your pro's reference, not ours to host.</div>
+    </div>
+    <div id="reqMsg"></div>
+    <button class="btn btn-dark" style="width:100%;" onclick="submitBooking()">Send Request</button>
+  </div>
+</div>
+
+<!-- ===================== EXPLORE CONTENT MODAL ===================== -->
+<div class="modal-overlay" id="exploreOverlay">
+  <div class="modal" style="max-width:920px;">
+    <button class="modal-close" onclick="closeExplore()">✕</button>
+    <div class="sub">Explore content</div>
+    <h3>Work done by videographers &amp; photographers</h3>
+    <div class="filters" style="margin-top:20px;">
+      <div class="search-row" style="margin-left:0;">
+        <div style="position:relative;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8474" stroke-width="2.4" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); pointer-events:none;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+          <input type="text" id="exploreSearch" placeholder="Search by name, style, or city…" style="padding-left:32px; min-width:240px;" oninput="renderExplore()">
+        </div>
+      </div>
+    </div>
+    <div id="exploreLoading" class="loading">Loading content…</div>
+    <div class="contact-sheet" id="exploreGrid" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); max-height:56vh; overflow-y:auto; padding-right:4px;"></div>
+  </div>
+</div>
+
+<!-- ===================== FIND MATCHES MODAL ===================== -->
+<div class="modal-overlay" id="matchOverlay">
+  <div class="modal" style="max-width:640px;">
+    <button class="modal-close" onclick="closeMatchModal()">✕</button>
+    <div class="sub">Find matches</div>
+    <h3 id="matchTitle">Pros within your budget</h3>
+    <div id="matchFormStep">
+      <div class="field"><label>Content type</label>
+        <select id="matchType"><option>Photo</option><option>Video</option><option>Reels</option><option>Product</option><option>Events</option></select>
+      </div>
+      <div class="field"><label>City (optional)</label><input type="text" id="matchCity" placeholder="e.g. Austin — leave blank for any"></div>
+      <div class="field"><label>Shoot date</label><input type="date" id="matchDate"></div>
+      <div class="field"><label>Your budget (USD) — optional</label><input type="number" id="matchBudget" placeholder="Leave blank to see every matching pro"></div>
+      <button class="btn btn-dark" style="width:100%;" onclick="runMatchSearch()">See Matches</button>
+    </div>
+    <div id="matchResultsStep" style="display:none;">
+      <div id="matchSummary" class="mono" style="font-size:12px; color:#5B554A; margin-bottom:16px;"></div>
+      <div id="matchResultsList"></div>
+      <button class="btn btn-ghost" style="width:100%; margin-top:8px; color:#5B554A; border-color:#C9C2AE;" onclick="backToMatchForm()">← Adjust search</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== State ===================== */
+let currentUser = null;      // {email, name, role, city}
+let authMode = 'signup';
+let signupRole = 'client';
+let selectedTags = [];       // for pro portfolio edit
+let uploadedPhotos = [];     // for pro portfolio edit
+let activeFilterTag = 'All';
+let requestTargetEmail = null;
+
+/* ===================== Storage helpers ===================== */
+function keyFor(email){ return email.trim().toLowerCase().replace(/[^a-z0-9]/g,'_'); }
+
+function getStorageAdapter(){
+  if (window.storage && typeof window.storage.get === 'function') return window.storage;
+
+  const backendBase = 'http://localhost:3001';
+
+  return {
+    async get(key, shared){
+      try {
+        const res = await fetch(`${backendBase}/api/storage/${encodeURIComponent(key)}`);
+        const data = await res.json();
+        if (!data || data.value === null || data.value === undefined) return null;
+        return { value: typeof data.value === 'string' ? data.value : JSON.stringify(data.value) };
+      } catch (error) {
+        const fullKey = (shared ? 'shared:' : 'local:') + key;
+        const value = localStorage.getItem(fullKey);
+        return value ? { value } : null;
+      }
+    },
+    async set(key, value, shared){
+      try {
+        const res = await fetch(`${backendBase}/api/storage/${encodeURIComponent(key)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: value
+        });
+        return res.ok;
+      } catch (error) {
+        const fullKey = (shared ? 'shared:' : 'local:') + key;
+        localStorage.setItem(fullKey, value);
+        return true;
+      }
+    },
+    async list(prefix, shared){
+      try {
+        const res = await fetch(`${backendBase}/api/storage?prefix=${encodeURIComponent(prefix)}`);
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        const base = (shared ? 'shared:' : 'local:') + prefix;
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(base)) keys.push(key.replace(/^shared:|^local:/, ''));
+        }
+        return keys;
+      }
+    }
+  };
+}
+const storage = getStorageAdapter();
+window.storage = storage;
+
+async function sGet(key, shared){
+  try{ const r = await storage.get(key, shared); return r ? JSON.parse(r.value) : null; }
+  catch(e){ return null; }
+}
+async function sSet(key, value, shared){
+  try{ const r = await storage.set(key, JSON.stringify(value), shared); return !!r; }
+  catch(e){ console.error('storage set failed', e); return false; }
+}
+async function sList(prefix, shared){
+  try{ const r = await storage.list(prefix, shared); return Array.isArray(r) ? r : (r && r.keys ? r.keys : []); }
+  catch(e){ return []; }
+}
+
+/* ===================== Nav / view switching ===================== */
+function showLanding(){
+  document.getElementById('landingView').style.display = 'block';
+  document.getElementById('appView').style.display = 'none';
+  window.scrollTo(0,0);
+}
+function scrollToId(id){
+  showLanding();
+  setTimeout(()=>document.getElementById(id).scrollIntoView({behavior:'smooth'}), 50);
+}
+
+function enterApp(){
+  document.getElementById('landingView').style.display = 'none';
+  document.getElementById('appView').style.display = 'block';
+  document.getElementById('navLoggedOut').style.display = 'none';
+  document.getElementById('navLoggedOutCtas').style.display = 'none';
+  document.getElementById('navLoggedIn').style.display = 'flex';
+  document.getElementById('whoChip').textContent = currentUser.name + ' · ' + currentUser.role.toUpperCase();
+  document.getElementById('exploreNavBtn').style.display = currentUser.role === 'client' ? 'flex' : 'none';
+  window.scrollTo(0,0);
+
+  if(currentUser.role === 'client'){
+    document.getElementById('clientDash').style.display = 'block';
+    document.getElementById('proDash').style.display = 'none';
+    document.getElementById('clientGreeting').textContent = 'Browse vetted photographers & videographers, or check your booking status.';
+    loadAndRenderPortfolios();
+    loadClientBookings();
+  } else {
+    document.getElementById('proDash').style.display = 'block';
+    document.getElementById('clientDash').style.display = 'none';
+    document.getElementById('proGreeting').textContent = 'Keep your portfolio current and respond to booking requests.';
+    loadOwnPortfolioIntoForm();
+    loadProRequests();
+  }
+}
+
+function logout(){
+  currentUser = null;
+  document.getElementById('navLoggedOut').style.display = 'flex';
+  document.getElementById('navLoggedOutCtas').style.display = 'flex';
+  document.getElementById('navLoggedIn').style.display = 'none';
+  showLanding();
+}
+
+/* ===================== Auth modal ===================== */
+function openAuth(mode, role){
+  document.getElementById('authOverlay').classList.add('open');
+  setAuthMode(mode || 'signup');
+  if(role) setRole(role);
+  document.getElementById('authMsg').innerHTML = '';
+}
+function closeAuth(){ document.getElementById('authOverlay').classList.remove('open'); }
+
+function setAuthMode(mode){
+  authMode = mode;
+  document.getElementById('toggleSignup').classList.toggle('active', mode==='signup');
+  document.getElementById('toggleLogin').classList.toggle('active', mode==='login');
+  document.getElementById('signupFields').style.display = mode==='signup' ? 'block' : 'none';
+  document.getElementById('authTitle').textContent = mode==='signup' ? 'Sign Up' : 'Log In';
+  document.getElementById('authSubmit').textContent = mode==='signup' ? 'Create Account' : 'Log In';
+}
+function setRole(role){
+  signupRole = role;
+  document.getElementById('roleClient').classList.toggle('active', role==='client');
+  document.getElementById('rolePro').classList.toggle('active', role==='pro');
+}
+
+async function submitAuth(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const msgEl = document.getElementById('authMsg');
+  msgEl.innerHTML = '';
+  if(!email || !password){ msgEl.innerHTML = '<div class="msg err">Enter an email and password.</div>'; return; }
+
+  const key = 'users:' + keyFor(email);
+
+  if(authMode === 'signup'){
+    const name = document.getElementById('suName').value.trim();
+    const city = document.getElementById('suCity').value.trim();
+    if(!name || !city){ msgEl.innerHTML = '<div class="msg err">Enter your name and city.</div>'; return; }
+    const existing = await sGet(key, true);
+    if(existing){ msgEl.innerHTML = '<div class="msg err">An account with that email already exists — try logging in.</div>'; return; }
+    const user = {email, password, role: signupRole, name, city, createdAt: Date.now()};
+    const ok = await sSet(key, user, true);
+    if(!ok){ msgEl.innerHTML = '<div class="msg err">Could not create account — try again.</div>'; return; }
+    if(signupRole === 'pro'){
+      await sSet('portfolio:' + keyFor(email), {email, name, city, tags:[], price:'', specialty:'', photos:[]}, true);
+    }
+    currentUser = user;
+    closeAuth();
+    enterApp();
+  } else {
+    const user = await sGet(key, true);
+    if(!user || user.password !== password){ msgEl.innerHTML = '<div class="msg err">Invalid email or password.</div>'; return; }
+    currentUser = user;
+    closeAuth();
+    enterApp();
+  }
+}
+
+/* ===================== Client: browse portfolios ===================== */
+function setClientTab(tab){
+  document.querySelectorAll('#clientDash .app-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  document.getElementById('clientBrowseTab').style.display = tab==='browse' ? 'block' : 'none';
+  document.getElementById('clientBookingsTab').style.display = tab==='bookings' ? 'block' : 'none';
+  document.getElementById('clientWishlistTab').style.display = tab==='wishlist' ? 'block' : 'none';
+  if(tab==='bookings') loadClientBookings();
+  if(tab==='wishlist') loadWishlist('clientWishlistList', 'clientWishlistLoading', true);
+}
+
+let allPortfolios = [];
+
+async function loadAndRenderPortfolios(){
+  const loadingEl = document.getElementById('portfolioLoading');
+  loadingEl.style.display = 'block';
+  const keys = await sList('portfolio:', true);
+  const list = [];
+  for(const k of keys){
+    const p = await sGet(k, true);
+    if(p && p.tags && p.tags.length > 0) list.push(p);
+  }
+  allPortfolios = list;
+  const citySel = document.getElementById('cityFilter');
+  const currentCity = citySel.value;
+  citySel.innerHTML = '<option value="All">All cities</option>';
+  [...new Set(list.map(p=>p.city))].sort().forEach(city=>{
+    const opt = document.createElement('option'); opt.value = city; opt.textContent = city;
+    citySel.appendChild(opt);
+  });
+  citySel.value = [...citySel.options].some(o=>o.value===currentCity) ? currentCity : 'All';
+  loadingEl.style.display = 'none';
+  renderPortfolios();
+}
+
+document.querySelectorAll('.filters .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    document.querySelectorAll('.filters .chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilterTag = chip.dataset.filter;
+    renderPortfolios();
+  });
+});
+
+function renderPortfolios(){
+  const grid = document.getElementById('creatorGrid');
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const city = document.getElementById('cityFilter').value;
+  const filtered = allPortfolios.filter(p=>{
+    const matchesTag = activeFilterTag==='All' || p.tags.includes(activeFilterTag);
+    const matchesCity = city==='All' || p.city===city;
+    const matchesSearch = !q || p.name.toLowerCase().includes(q) || (p.specialty||'').toLowerCase().includes(q);
+    return matchesTag && matchesCity && matchesSearch;
+  });
+  grid.innerHTML = '';
+  if(filtered.length===0){
+    grid.innerHTML = '<div class="empty-state">No pros match that filter yet. Try widening your search, or check back as more pros join.</div>';
+    return;
+  }
+  filtered.forEach(p=>{
+    const thumbStyle = p.photos && p.photos[0]
+      ? `background-image:url('${p.photos[0]}');`
+      : `background:linear-gradient(135deg,#5C3A1E,#E08A3C);`;
+    const card = document.createElement('div');
+    card.className = 'frame-card';
+    card.innerHTML = `
+      <div class="thumb" style="${thumbStyle}"><span class="tag">${p.tags[0]||''}</span></div>
+      <div class="card-body">
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="meta">${escapeHtml(p.city)} · ${p.tags.join(' · ')}</div>
+        <div class="meta" style="margin-top:6px; color:#C7C0AC;">${escapeHtml(p.specialty||'')}</div>
+        <div class="foot">
+          <span class="price">${escapeHtml(p.price||'Contact for rate')}</span>
+          <button class="btn btn-ghost btn-sm" style="color:var(--paper);" onclick="openRequestModal('${p.email.replace(/'/g,"\\'")}')">Request</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function escapeHtml(s){ const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+/* ===================== Booking request modal ===================== */
+function openRequestModal(proEmail, prefillDate){
+  const pro = allPortfolios.find(p=>p.email===proEmail);
+  if(!pro) return;
+  requestTargetEmail = proEmail;
+  document.getElementById('requestProName').textContent = 'Request ' + pro.name;
+  const typeSel = document.getElementById('reqType');
+  typeSel.innerHTML = '';
+  pro.tags.forEach(t=>{ const o = document.createElement('option'); o.textContent = t; typeSel.appendChild(o); });
+  document.getElementById('reqDate').value = prefillDate || '';
+  document.getElementById('reqMessage').value = '';
+  document.getElementById('reqInspoLink').value = '';
+  document.getElementById('reqMsg').innerHTML = '';
+
+  const rateBits = [];
+  if(pro.baseRate) rateBits.push('$' + pro.baseRate + ' base' + (pro.hoursIncluded ? ' (' + pro.hoursIncluded + ')' : ''));
+  if(pro.commercialRate) rateBits.push('+$' + pro.commercialRate + ' commercial use');
+  if(pro.rushFee) rateBits.push('+$' + pro.rushFee + ' rush delivery');
+  document.getElementById('requestRateNote').textContent = rateBits.join(' · ');
+
+  const usageSel = document.getElementById('reqUsage');
+  usageSel.querySelector('option[value="commercial"]').disabled = !pro.commercialRate;
+  usageSel.value = 'personal';
+  const rushField = document.getElementById('reqRushField');
+  rushField.style.display = pro.rushFee ? 'block' : 'none';
+  document.getElementById('reqRush').checked = false;
+
+  document.getElementById('requestOverlay').classList.add('open');
+  updateEstimatedTotal();
+}
+function closeRequestModal(){ document.getElementById('requestOverlay').classList.remove('open'); }
+
+function updateEstimatedTotal(){
+  const pro = allPortfolios.find(p=>p.email===requestTargetEmail);
+  const totalEl = document.getElementById('reqTotal');
+  if(!pro || !pro.baseRate){ totalEl.textContent = ''; return; }
+  let total = pro.baseRate;
+  if(document.getElementById('reqUsage').value === 'commercial' && pro.commercialRate) total += pro.commercialRate;
+  if(document.getElementById('reqRush').checked && pro.rushFee) total += pro.rushFee;
+  totalEl.textContent = '$' + total;
+}
+
+async function submitBooking(){
+  const msgEl = document.getElementById('reqMsg');
+  const date = document.getElementById('reqDate').value;
+  if(!date){ msgEl.innerHTML = '<div class="msg err">Pick a shoot date.</div>'; return; }
+  const pro = allPortfolios.find(p=>p.email===requestTargetEmail);
+  const usage = document.getElementById('reqUsage').value;
+  const rush = document.getElementById('reqRush').checked;
+  let price = pro.baseRate;
+  if(usage === 'commercial' && pro.commercialRate) price += pro.commercialRate;
+  if(rush && pro.rushFee) price += pro.rushFee;
+  const id = 'b' + Date.now() + Math.floor(Math.random()*1000);
+  const booking = {
+    id,
+    clientEmail: currentUser.email, clientName: currentUser.name,
+    proEmail: pro.email, proName: pro.name,
+    contentType: document.getElementById('reqType').value,
+    city: pro.city, date, price, usage, rush,
+    message: document.getElementById('reqMessage').value.trim(),
+    inspoLink: document.getElementById('reqInspoLink').value.trim(),
+    status: 'requested', createdAt: Date.now()
+  };
+  const ok = await sSet('bookings:' + id, booking, true);
+  if(!ok){ msgEl.innerHTML = '<div class="msg err">Could not send the request — try again.</div>'; return; }
+  msgEl.innerHTML = '<div class="msg ok">Sent — ' + escapeHtml(pro.name) + ' will accept or decline at $' + price + '.</div>';
+  setTimeout(()=>{ closeRequestModal(); setClientTab('bookings'); }, 900);
+}
+
+/* ===================== Client: my bookings ===================== */
+async function loadClientBookings(){
+  const loadingEl = document.getElementById('clientBookingsLoading');
+  const listEl = document.getElementById('clientBookingsList');
+  loadingEl.style.display = 'block'; listEl.innerHTML = '';
+  const keys = await sList('bookings:', true);
+  const mine = [];
+  for(const k of keys){
+    const b = await sGet(k, true);
+    if(b && b.clientEmail === currentUser.email) mine.push(b);
+  }
+  mine.sort((a,b)=>b.createdAt - a.createdAt);
+  loadingEl.style.display = 'none';
+  if(mine.length===0){ listEl.innerHTML = '<div class="empty-state">No bookings yet — request a shoot from the Browse Creators tab.</div>'; return; }
+  mine.forEach(b=>{
+    const div = document.createElement('div');
+    div.className = 'card';
+    const completeAction = b.status === 'accepted'
+      ? `<div style="margin-top:10px;"><button class="btn btn-dark btn-sm" onclick="markBookingCompleted('${b.id}')">Mark as Completed</button></div>`
+      : '';
+    div.innerHTML = `
+      <div class="row">
+        <div>
+          <div style="font-weight:600; font-size:15px;">${escapeHtml(b.proName)} — ${escapeHtml(b.contentType)}</div>
+          <div class="mono" style="font-size:12px; color:#5B554A; margin-top:4px;">${escapeHtml(b.city)} · ${escapeHtml(b.date)} · $${b.price}</div>
+          ${b.message ? `<div style="font-size:13px; color:#5B554A; margin-top:8px;">"${escapeHtml(b.message)}"</div>` : ''}
+          ${completeAction}
+        </div>
+        <span class="status-pill status-${b.status}">${b.status}</span>
+      </div>`;
+    listEl.appendChild(div);
+  });
+}
+
+/* ===================== Find Matches (budget-based) ===================== */
+function parsePrice(str){
+  if(!str) return null;
+  const m = String(str).match(/[\d,.]+/);
+  if(!m) return null;
+  return parseFloat(m[0].replace(/,/g,''));
+}
+
+async function openMatchModal(){
+  if(allPortfolios.length === 0){ await loadAndRenderPortfolios(); }
+  document.getElementById('matchOverlay').classList.add('open');
+  backToMatchForm();
+}
+function closeMatchModal(){ document.getElementById('matchOverlay').classList.remove('open'); }
+function backToMatchForm(){
+  document.getElementById('matchFormStep').style.display = 'block';
+  document.getElementById('matchResultsStep').style.display = 'none';
+}
+
+const LEVEL_RANK = {Emerging: 1, Experienced: 2, Expert: 3};
+
+function buildMatchCard(p, date, opts){
+  const photos = (p.photos || []).slice(0,3);
+  const mainPhoto = photos[0];
+  const card = document.createElement('div');
+  card.className = 'match-card';
+  const fitBadge = opts && opts.above
+    ? `<span class="match-fit" style="background:#FBEAD9; color:var(--brick);">+$${opts.overAmount} over · ${escapeHtml(p.level||'Emerging')}</span>`
+    : `<span class="match-fit">${escapeHtml(p.price || 'Rate on request')}</span>`;
+  card.innerHTML = `
+    <div class="match-thumb" style="${mainPhoto ? `background-image:url('${mainPhoto}');` : `background:linear-gradient(135deg,#5C3A1E,#E08A3C);`}"></div>
+    <div style="flex:1; min-width:160px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+        <div>
+          <div style="font-weight:600; font-size:14.5px;">${escapeHtml(p.name)}</div>
+          <div class="mono" style="font-size:11px; color:#8a8474; margin-top:2px;">${escapeHtml(p.city)} · ${p.tags.join(' · ')} · ${escapeHtml(p.level||'Emerging')}</div>
+        </div>
+        ${fitBadge}
+      </div>
+      <div style="font-size:12.5px; color:#5B554A; margin-top:8px;">${escapeHtml(p.specialty||'')}</div>
+      ${photos.length ? `<div class="match-photos">${photos.map(ph=>`<div style="background-image:url('${ph}');"></div>`).join('')}</div>` : '<div class="mono" style="font-size:10.5px; color:#B0AA96; margin-top:8px;">No portfolio photos yet</div>'}
+      <button class="btn btn-dark btn-sm" style="margin-top:10px;" onclick="closeMatchModal(); openRequestModal('${p.email.replace(/'/g,"\\'")}', '${date}')">Request This Pro</button>
+    </div>`;
+  return card;
+}
+
+function addListHeader(listEl, text, color){
+  const header = document.createElement('div');
+  header.className = 'mono';
+  header.style.cssText = `font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:${color}; margin:20px 0 10px;`;
+  header.textContent = text;
+  listEl.appendChild(header);
+}
+
+function runMatchSearch(){
+  const type = document.getElementById('matchType').value;
+  const city = document.getElementById('matchCity').value.trim().toLowerCase();
+  const date = document.getElementById('matchDate').value;
+  const budgetRaw = document.getElementById('matchBudget').value;
+  const budget = budgetRaw === '' ? null : parseFloat(budgetRaw);
+
+  const eligible = allPortfolios.filter(p=>{
+    const matchesType = p.tags.includes(type);
+    const matchesCity = !city || p.city.toLowerCase().includes(city);
+    return matchesType && matchesCity;
+  }).sort((a,b)=>{
+    const rankDiff = (LEVEL_RANK[b.level]||1) - (LEVEL_RANK[a.level]||1);
+    if(rankDiff !== 0) return rankDiff;
+    const pa = parsePrice(a.price); const pb = parsePrice(b.price);
+    if(pa === null) return 1; if(pb === null) return -1;
+    return pa - pb;
+  });
+
+  document.getElementById('matchFormStep').style.display = 'none';
+  document.getElementById('matchResultsStep').style.display = 'block';
+  const summaryEl = document.getElementById('matchSummary');
+  const listEl = document.getElementById('matchResultsList');
+  listEl.innerHTML = '';
+
+  if(eligible.length === 0){
+    summaryEl.textContent = `No ${type.toLowerCase()} pros found${city ? ' near ' + document.getElementById('matchCity').value.trim() : ''} yet.`;
+    listEl.innerHTML = '<div class="empty-state">Try a different content type or city, or check back as more pros join.</div>';
+    return;
+  }
+
+  // No budget entered — show the full matching list, no price segmentation.
+  if(budget === null){
+    summaryEl.textContent = `${eligible.length} ${type.toLowerCase()} pro${eligible.length===1?'':'s'}${city?' near '+document.getElementById('matchCity').value.trim():''}. Browse portfolios below and pick whoever fits.`;
+    eligible.forEach(p=>listEl.appendChild(buildMatchCard(p, date)));
+    return;
+  }
+
+  // Budget entered — show everyone, split into below/at and above, both visible.
+  const below = eligible.filter(p=>{ const price = parsePrice(p.price); return price === null || price <= budget; });
+  const above = eligible.filter(p=>{ const price = parsePrice(p.price); return price !== null && price > budget; })
+    .sort((a,b)=>parsePrice(a.price) - parsePrice(b.price));
+
+  summaryEl.textContent = `${eligible.length} ${type.toLowerCase()} pro${eligible.length===1?'':'s'}${city?' near '+document.getElementById('matchCity').value.trim():''} — below and above your $${budget} budget. Browse their work before you decide.`;
+
+  if(below.length > 0){
+    addListHeader(listEl, 'At or below your budget', 'var(--moss)');
+    below.forEach(p=>listEl.appendChild(buildMatchCard(p, date)));
+  }
+  if(above.length > 0){
+    addListHeader(listEl, 'Above your budget', 'var(--brick)');
+    above.forEach(p=>{
+      const overAmount = Math.round(parsePrice(p.price) - budget);
+      listEl.appendChild(buildMatchCard(p, date, {above:true, overAmount}));
+    });
+  }
+}
+
+/* ===================== Explore Content (search icon) ===================== */
+let exploreItems = [];
+
+async function openExplore(){
+  document.getElementById('exploreOverlay').classList.add('open');
+  document.getElementById('exploreSearch').value = '';
+  const loadingEl = document.getElementById('exploreLoading');
+  loadingEl.style.display = 'block';
+  document.getElementById('exploreGrid').innerHTML = '';
+
+  if(allPortfolios.length === 0){ await loadAndRenderPortfolios(); }
+
+  exploreItems = [];
+  allPortfolios.forEach(p=>{
+    (p.photos || []).forEach((photo, i)=>{
+      exploreItems.push({photo, name:p.name, email:p.email, city:p.city, tags:p.tags, specialty:p.specialty, price:p.price});
+    });
+  });
+  loadingEl.style.display = 'none';
+  renderExplore();
+}
+function closeExplore(){ document.getElementById('exploreOverlay').classList.remove('open'); }
+
+function renderExplore(){
+  const grid = document.getElementById('exploreGrid');
+  const q = (document.getElementById('exploreSearch').value || '').trim().toLowerCase();
+  const filtered = exploreItems.filter(it=>{
+    if(!q) return true;
+    return it.name.toLowerCase().includes(q) || it.city.toLowerCase().includes(q) ||
+           (it.specialty||'').toLowerCase().includes(q) || it.tags.join(' ').toLowerCase().includes(q);
+  });
+  grid.innerHTML = '';
+  if(filtered.length === 0){
+    grid.innerHTML = '<div class="empty-state">No uploaded work matches that search yet — pros are still adding portfolio photos.</div>';
+    return;
+  }
+  filtered.forEach(it=>{
+    const card = document.createElement('div');
+    card.className = 'frame-card';
+    card.innerHTML = `
+      <div class="thumb" style="background-image:url('${it.photo}');"><span class="tag">${it.tags[0]||''}</span></div>
+      <div class="card-body">
+        <div class="name">${escapeHtml(it.name)}</div>
+        <div class="meta">${escapeHtml(it.city)}</div>
+        <div class="foot">
+          <span class="price">${escapeHtml(it.price||'')}</span>
+          <button class="btn btn-ghost btn-sm" style="color:var(--paper);" onclick="closeExplore(); openRequestModal('${it.email.replace(/'/g,"\\'")}')">Request</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ===================== Community Wishlist ===================== */
+async function postWish(){
+  const msgEl = document.getElementById('wishMsg');
+  const city = document.getElementById('wishCity').value.trim();
+  const description = document.getElementById('wishDescription').value.trim();
+  if(!city || !description){ msgEl.innerHTML = '<div class="msg err">Add a city and a description of what you want shot.</div>'; return; }
+  const id = 'w' + Date.now() + Math.floor(Math.random()*1000);
+  const wish = {
+    id, clientEmail: currentUser.email, clientName: currentUser.name,
+    contentType: document.getElementById('wishType').value,
+    city, description, inspoLink: document.getElementById('wishInspoLink').value.trim(),
+    createdAt: Date.now(), interestedPros: []
+  };
+  const ok = await sSet('wishes:' + id, wish, true);
+  if(!ok){ msgEl.innerHTML = '<div class="msg err">Could not post — try again.</div>'; return; }
+  msgEl.innerHTML = '<div class="msg ok">Posted to the community wishlist.</div>';
+  document.getElementById('wishCity').value = '';
+  document.getElementById('wishDescription').value = '';
+  document.getElementById('wishInspoLink').value = '';
+  loadWishlist('clientWishlistList', 'clientWishlistLoading', true);
+}
+
+async function fetchAllWishes(){
+  const keys = await sList('wishes:', true);
+  const wishes = [];
+  for(const k of keys){ const w = await sGet(k, true); if(w) wishes.push(w); }
+  wishes.sort((a,b)=>b.createdAt - a.createdAt);
+  return wishes;
+}
+
+async function loadWishlist(listId, loadingId, isClientView){
+  const loadingEl = document.getElementById(loadingId);
+  const listEl = document.getElementById(listId);
+  loadingEl.style.display = 'block'; listEl.innerHTML = '';
+  const wishes = await fetchAllWishes();
+  loadingEl.style.display = 'none';
+  if(wishes.length === 0){ listEl.innerHTML = '<div class="empty-state">No wishes posted yet — be the first to post what you want shot.</div>'; return; }
+  wishes.forEach(w=>renderWishCard(w, listEl, isClientView));
+}
+
+function renderWishCard(w, container, isClientView){
+  const isOwn = currentUser && w.clientEmail === currentUser.email;
+  const interested = w.interestedPros || [];
+  const iAmInterested = currentUser && interested.some(p=>p.email === currentUser.email);
+  const card = document.createElement('div');
+  card.className = 'frame-card';
+  let actionHtml;
+  if(isClientView){
+    actionHtml = isOwn
+      ? `<span class="mono" style="font-size:11px; color:var(--amber);">${interested.length} pro${interested.length===1?'':'s'} interested</span>`
+      : '';
+  } else {
+    actionHtml = iAmInterested
+      ? `<span class="mono" style="font-size:11px; color:var(--moss);">You're interested</span>`
+      : `<button class="btn btn-ghost btn-sm" style="color:var(--paper);" onclick="expressInterest('${w.id}')">I'm interested</button>`;
+  }
+  card.innerHTML = `
+    <div class="thumb" style="background:linear-gradient(135deg,#5C3A1E,#E08A3C);"><span class="tag">${w.contentType}</span></div>
+    <div class="card-body">
+      <div class="name">${escapeHtml(w.clientName)}</div>
+      <div class="meta">${escapeHtml(w.city)} · ${escapeHtml(w.contentType)}</div>
+      <div class="meta" style="margin-top:6px; color:#C7C0AC;">${escapeHtml(w.description)}</div>
+      ${w.inspoLink ? `<div style="margin-top:6px;"><a href="${escapeHtml(w.inspoLink)}" target="_blank" rel="noopener" class="mono" style="font-size:11px; color:var(--amber);">View reference ↗</a></div>` : ''}
+      <div class="foot">${actionHtml}</div>
+    </div>`;
+  container.appendChild(card);
+}
+
+async function expressInterest(wishId){
+  const w = await sGet('wishes:' + wishId, true);
+  if(!w) return;
+  w.interestedPros = w.interestedPros || [];
+  if(!w.interestedPros.some(p=>p.email === currentUser.email)){
+    w.interestedPros.push({email: currentUser.email, name: currentUser.name});
+    await sSet('wishes:' + wishId, w, true);
+  }
+  loadWishlist('proWishlistList', 'proWishlistLoading', false);
+}
+
+async function loadLandingWishes(){
+  const container = document.getElementById('landingWishlist');
+  if(!container) return;
+  const wishes = (await fetchAllWishes()).slice(0,3);
+  container.innerHTML = '';
+  if(wishes.length===0){ container.innerHTML = '<div class="empty-state">No wishes posted yet — sign up and be the first.</div>'; return; }
+  wishes.forEach(w=>{
+    const card = document.createElement('div');
+    card.className = 'frame-card';
+    card.innerHTML = `
+      <div class="thumb" style="background:linear-gradient(135deg,#5C3A1E,#E08A3C);"><span class="tag">${w.contentType}</span></div>
+      <div class="card-body">
+        <div class="name">${escapeHtml(w.clientName)}</div>
+        <div class="meta">${escapeHtml(w.city)} · ${escapeHtml(w.contentType)}</div>
+        <div class="meta" style="margin-top:6px; color:#C7C0AC;">${escapeHtml(w.description)}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+/* ===================== Pro: portfolio ===================== */
+document.querySelectorAll('.tag-check').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    const tag = chip.dataset.tag;
+    if(selectedTags.includes(tag)){ selectedTags = selectedTags.filter(t=>t!==tag); chip.classList.remove('active'); }
+    else { selectedTags.push(tag); chip.classList.add('active'); }
+  });
+});
+
+function levelForCount(count){
+  count = count || 0;
+  if(count >= 10) return 'Expert';
+  if(count >= 3) return 'Experienced';
+  return 'Emerging';
+}
+
+async function loadOwnPortfolioIntoForm(){
+  const p = await sGet('portfolio:' + keyFor(currentUser.email), true);
+  if(!p) return;
+  selectedTags = p.tags || [];
+  document.querySelectorAll('.tag-check').forEach(chip=>chip.classList.toggle('active', selectedTags.includes(chip.dataset.tag)));
+  document.getElementById('proCity').value = p.city || currentUser.city || '';
+  document.getElementById('proBaseRate').value = p.baseRate || '';
+  document.getElementById('proHours').value = p.hoursIncluded || '';
+  document.getElementById('proCommercialRate').value = p.commercialRate || '';
+  document.getElementById('proRushFee').value = p.rushFee || '';
+  const completed = p.completedShoots || 0;
+  document.getElementById('proLevelDisplay').textContent = p.level || levelForCount(completed);
+  document.getElementById('proCompletedDisplay').textContent = completed + ' completed shoot' + (completed===1?'':'s');
+  document.getElementById('proSpecialty').value = p.specialty || '';
+  uploadedPhotos = p.photos || [];
+  renderPhotoRow();
+}
+
+function renderPhotoRow(){
+  const row = document.getElementById('photoRow');
+  row.innerHTML = '';
+  uploadedPhotos.forEach((photo,i)=>{
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.style.backgroundImage = `url('${photo}')`;
+    slot.innerHTML = `<button class="rm" onclick="removePhoto(${i})">✕</button>`;
+    row.appendChild(slot);
+  });
+  if(uploadedPhotos.length < 3){
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.textContent = 'Add photo';
+    row.appendChild(slot);
+  }
+}
+function removePhoto(i){ uploadedPhotos.splice(i,1); renderPhotoRow(); }
+
+function resizeImage(file, maxWidth){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const scale = Math.min(1, maxWidth / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', 0.72));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handlePhotoUpload(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  if(uploadedPhotos.length >= 3){ document.getElementById('portfolioMsg').innerHTML = '<div class="msg err">Max 3 photos — remove one first.</div>'; event.target.value=''; return; }
+  try{
+    const dataUrl = await resizeImage(file, 480);
+    uploadedPhotos.push(dataUrl);
+    renderPhotoRow();
+  } catch(e){
+    document.getElementById('portfolioMsg').innerHTML = '<div class="msg err">Could not read that image — try another file.</div>';
+  }
+  event.target.value = '';
+}
+
+async function savePortfolio(){
+  const msgEl = document.getElementById('portfolioMsg');
+  if(selectedTags.length===0){ msgEl.innerHTML = '<div class="msg err">Pick at least one content type.</div>'; return; }
+  const city = document.getElementById('proCity').value.trim();
+  if(!city){ msgEl.innerHTML = '<div class="msg err">Add your city.</div>'; return; }
+  const baseRate = parseFloat(document.getElementById('proBaseRate').value);
+  if(!baseRate || baseRate <= 0){ msgEl.innerHTML = '<div class="msg err">Add a base rate greater than $0.</div>'; return; }
+  const commercialRate = parseFloat(document.getElementById('proCommercialRate').value) || null;
+  const rushFee = parseFloat(document.getElementById('proRushFee').value) || null;
+  const hoursIncluded = document.getElementById('proHours').value.trim();
+  const existing = await sGet('portfolio:' + keyFor(currentUser.email), true);
+  const completedShoots = (existing && existing.completedShoots) || 0;
+  const portfolio = {
+    email: currentUser.email, name: currentUser.name, city,
+    tags: selectedTags,
+    baseRate, hoursIncluded, commercialRate, rushFee,
+    completedShoots, level: levelForCount(completedShoots),
+    price: '$' + baseRate + '/shoot',
+    specialty: document.getElementById('proSpecialty').value.trim(),
+    photos: uploadedPhotos
+  };
+  const ok = await sSet('portfolio:' + keyFor(currentUser.email), portfolio, true);
+  msgEl.innerHTML = ok ? '<div class="msg ok">Portfolio saved — clients can now find you.</div>' : '<div class="msg err">Save failed — try again.</div>';
+}
+
+/* ===================== Pro: booking requests ===================== */
+function setProTab(tab){
+  document.querySelectorAll('#proDash .app-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  document.getElementById('proPortfolioTab').style.display = tab==='portfolio' ? 'block' : 'none';
+  document.getElementById('proRequestsTab').style.display = tab==='requests' ? 'block' : 'none';
+  document.getElementById('proWishlistTab').style.display = tab==='wishlist' ? 'block' : 'none';
+  if(tab==='requests') loadProRequests();
+  if(tab==='wishlist') loadWishlist('proWishlistList', 'proWishlistLoading', false);
+}
+
+async function loadProRequests(){
+  const loadingEl = document.getElementById('proRequestsLoading');
+  const listEl = document.getElementById('proRequestsList');
+  loadingEl.style.display = 'block'; listEl.innerHTML = '';
+  const keys = await sList('bookings:', true);
+  const mine = [];
+  for(const k of keys){
+    const b = await sGet(k, true);
+    if(b && b.proEmail === currentUser.email) mine.push(b);
+  }
+  mine.sort((a,b)=>b.createdAt - a.createdAt);
+  loadingEl.style.display = 'none';
+  if(mine.length===0){ listEl.innerHTML = '<div class="empty-state">No booking requests yet — make sure your portfolio is saved and complete.</div>'; return; }
+  mine.forEach(b=>{
+    const div = document.createElement('div');
+    div.className = 'card';
+    const actions = b.status === 'requested'
+      ? `<div style="display:flex; gap:8px; margin-top:10px;">
+           <button class="btn btn-dark btn-sm" onclick="updateBookingStatus('${b.id}','accepted')">Accept</button>
+           <button class="btn btn-danger btn-sm" onclick="updateBookingStatus('${b.id}','declined')">Decline</button>
+         </div>` : '';
+    div.innerHTML = `
+      <div class="row">
+        <div>
+          <div style="font-weight:600; font-size:15px;">${escapeHtml(b.clientName)} — ${escapeHtml(b.contentType)}</div>
+          <div class="mono" style="font-size:12px; color:#5B554A; margin-top:4px;">${escapeHtml(b.city)} · ${escapeHtml(b.date)} · $${b.price}</div>
+          ${b.message ? `<div style="font-size:13px; color:#5B554A; margin-top:8px;">"${escapeHtml(b.message)}"</div>` : ''}
+          ${b.inspoLink ? `<div style="font-size:12px; margin-top:6px;"><a href="${escapeHtml(b.inspoLink)}" target="_blank" rel="noopener" style="color:var(--amber);">View reference ↗</a></div>` : ''}
+          ${actions}
+        </div>
+        <span class="status-pill status-${b.status}">${b.status}</span>
+      </div>`;
+    listEl.appendChild(div);
+  });
+}
+
+async function updateBookingStatus(id, status){
+  const b = await sGet('bookings:' + id, true);
+  if(!b) return;
+  b.status = status;
+  await sSet('bookings:' + id, b, true);
+  loadProRequests();
+}
+
+async function markBookingCompleted(id){
+  const b = await sGet('bookings:' + id, true);
+  if(!b || b.status !== 'accepted') return;
+  b.status = 'completed';
+  await sSet('bookings:' + id, b, true);
+
+  const portfolioKey = 'portfolio:' + keyFor(b.proEmail);
+  const p = await sGet(portfolioKey, true);
+  if(p){
+    p.completedShoots = (p.completedShoots || 0) + 1;
+    p.level = levelForCount(p.completedShoots);
+    await sSet(portfolioKey, p, true);
+  }
+  loadClientBookings();
+}
+
+loadLandingWishes();
+
+/* ===================== Hero timer ===================== */
+let seconds = 0;
+setInterval(()=>{
+  seconds++;
+  const h = String(Math.floor(seconds/3600)).padStart(2,'0');
+  const m = String(Math.floor((seconds%3600)/60)).padStart(2,'0');
+  const s = String(seconds%60).padStart(2,'0');
+  const el = document.getElementById('rec-timer');
+  if(el) el.textContent = `${h}:${m}:${s}`;
+}, 1000);
+</script>
+
+</body>
+</html>

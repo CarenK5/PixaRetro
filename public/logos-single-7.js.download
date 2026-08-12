@@ -1,0 +1,2193 @@
+const logo_basic = Vue.extend({
+  name: 'Logo',
+  template: '#logo-basic',
+  props: {
+    preLoad: Boolean,
+    bgTransparence: Boolean,
+    insideSVG: Boolean,
+    id: String,
+    logo: Object,
+  },
+  data() {
+    return {
+      loaded: false,
+      bbox: [],
+      svg: ''
+    };
+  },
+  watch: {
+    title() {
+      this.getLogoThrottled()
+    },
+    titleFamily() {
+      this.getLogo();
+    },
+    titleVariant() {
+      this.getLogo();
+    },
+    titleColor() {
+      if (this.loaded) this.update()
+    },
+    titleScale() {
+      if (this.loaded) this.update()
+    },
+    titleLetterSpace() {
+      if (this.loaded) this.update();
+    },
+    titleLineSpace() {
+      if (this.loaded) this.update();
+    },
+    titleBoldness() {
+      if (this.loaded) this.update()
+    },
+    titleX() {
+      if (this.loaded) this.update();
+    },
+    titleY() {
+      if (this.loaded) this.update();
+    },
+    titleAlign() {
+      if (this.loaded) this.update();
+    },
+
+    slogan() {
+      this.getLogoThrottled()
+    },
+    sloganFamily() {
+      this.getLogo();
+    },
+    sloganVariant() {
+      this.getLogo();
+    },
+    sloganColor() {
+      if (this.loaded) this.update()
+    },
+    sloganScale() {
+      if (this.loaded) this.update()
+    },
+    sloganLetterSpace() {
+      if (this.loaded) this.update()
+    },
+    sloganLineSpace() {
+      if (this.loaded) this.update()
+    },
+    sloganBoldness() {
+      if (this.loaded) this.update()
+    },
+    sloganAlign() {
+      if (this.loaded) this.update()
+    },
+    sloganX() {
+      if (this.loaded) this.update()
+    },
+    sloganY() {
+      if (this.loaded) this.update()
+    },
+    icon() {
+      this.getLogo();
+    },
+    showIcon() {
+      if (this.loaded) this.update()
+    },
+    iconScale() {
+      if (this.loaded) this.update()
+    },
+    iconColor() {
+      if (this.loaded) this.update()
+    },
+    iconContainer() {
+      this.getLogo();
+    },
+    showIconContainer() {
+      if (this.loaded) this.update()
+    },
+    iconContainerScale() {
+      if (this.loaded) this.update()
+    },
+    iconContainerColor() {
+      if (this.loaded) this.update()
+    },
+    iconSpace() {
+      if (this.loaded) this.update();
+    },
+    iconX() {
+      if (this.loaded) this.update();
+    },
+    iconY() {
+      if (this.loaded) this.update();
+    },
+    nthChar() {
+      if (this.loaded) this.update();
+    },
+    container() {
+      this.getLogo();
+    },
+    showContainer() {
+      if (this.loaded) this.update()
+    },
+    containerScale() {
+      if (this.loaded) this.update()
+    },
+    containerColor() {
+      if (this.loaded) this.update()
+    },
+    containerX() {
+      if (this.loaded) this.update()
+    },
+    containerY() {
+      if (this.loaded) this.update()
+    },
+    backgroundColor() {
+      if (this.loaded) this.update()
+    },
+    layout() {
+      if (this.loaded) this.update()
+    },
+  },
+  created() {
+    this.getLogo();
+  },
+  updated() {
+    if (this.loaded) this.update()
+  },
+  computed: {
+    title() {
+      return this.logo.title;
+    },
+    titleColor() {
+      return this.logo.titleColor;
+    },
+    titleScale() {
+      return parseFloat(this.logo.titleScale) ? parseFloat(this.logo.titleScale) : 0;
+    },
+    titleBoldness() {
+      return parseFloat(this.logo.titleBoldness) ? parseFloat(this.logo.titleBoldness) : 0;
+    },
+    titleLetterSpace() {
+      return parseFloat(this.logo.titleLetterSpace) ? parseFloat(this.logo.titleLetterSpace) : 0;
+    },
+    titleLineSpace() {
+      return parseFloat(this.logo.titleLineSpace) ? parseFloat(this.logo.titleLineSpace) : 0;
+    },
+    titleAlign() {
+      return this.logo.titleAlign;
+    },
+    titleX() {
+      return parseFloat(this.logo.titleX) ? parseFloat(this.logo.titleX) : 0;
+    },
+    titleY() {
+      return parseFloat(this.logo.titleY) ? parseFloat(this.logo.titleY) : 0;
+    },
+    slogan() {
+      return this.logo.slogan;
+    },
+    sloganColor() {
+      return this.logo.sloganColor;
+    },
+    sloganScale() {
+      return parseFloat(this.logo.sloganScale) ? parseFloat(this.logo.sloganScale) : 0;
+    },
+    sloganLetterSpace() {
+      return parseFloat(this.logo.sloganLetterSpace) ? parseFloat(this.logo.sloganLetterSpace) : 0;
+    },
+    sloganBoldness() {
+      return parseFloat(this.logo.sloganBoldness) ? parseFloat(this.logo.sloganBoldness) : 0;
+    },
+    sloganLineSpace() {
+      return parseFloat(this.logo.sloganLineSpace) ? parseFloat(this.logo.sloganLineSpace) : 0;
+    },
+    sloganAlign() {
+      return this.logo.sloganAlign;
+    },
+    sloganX() {
+      return parseFloat(this.logo.sloganX) ? parseFloat(this.logo.sloganX) : 0;
+    },
+    sloganY() {
+      return parseFloat(this.logo.sloganY) ? parseFloat(this.logo.sloganY) : 0;
+    },
+    icon() {
+      return this.logo.icon;
+    },
+    showIcon() {
+      return this.logo.showIcon;
+    },
+    iconColor() {
+      return this.logo.iconColor;
+    },
+    iconContainer() {
+      return this.logo.iconContainer;
+    },
+    showIconContainer() {
+      return this.logo.showIconContainer;
+    },
+    iconContainerColor(){
+      return this.logo.iconContainerColor;
+    },
+    iconSpace() {
+      return parseFloat(this.logo.iconSpace) ? parseFloat(this.logo.iconSpace) : 0;
+    },
+    iconScale() {
+      return parseFloat(this.logo.iconScale) ? parseFloat(this.logo.iconScale) : 0;
+    },
+    iconContainerScale() {
+      return parseFloat(this.logo.iconContainerScale) ? parseFloat(this.logo.iconContainerScale) : 0;
+    },
+    nthChar() {
+      return parseInt(this.logo.nthChar) ? parseInt(this.logo.nthChar) : 0;
+    },
+    iconX() {
+      return parseFloat(this.logo.iconX) ? parseFloat(this.logo.iconX) : 0;
+    },
+    iconY() {
+      return parseFloat(this.logo.iconY) ? parseFloat(this.logo.iconY) : 0;
+    },
+    container() {
+      return this.logo.container;
+    },
+    showContainer() {
+      return this.logo.showContainer;
+    },
+    containerColor() {
+      return this.logo.containerColor;
+    },
+    backgroundColor() {
+      return this.logo.backgroundColor;
+    },
+    containerScale() {
+      return parseFloat(this.logo.containerScale) ? parseFloat(this.logo.containerScale) : 0;
+    },
+    containerX() {
+      return parseFloat(this.logo.containerX) ? parseFloat(this.logo.containerX) : 0;
+    },
+    containerY() {
+      return parseFloat(this.logo.containerY) ?  parseFloat(this.logo.containerY) : 0;
+    },
+    layout() {
+      return this.logo.layout;
+    },
+
+    /* properties not adjusted at present by edit modal */
+    titleFamily() {
+      return this.logo.titleFamily;
+    },
+    titleVariant() {
+      return this.logo.titleVariant;
+    },
+    sloganFamily() {
+      return this.logo.sloganFamily;
+    },
+    sloganVariant() {
+      return this.logo.sloganVariant;
+    },
+    palette() {
+      return this.logo.palette;
+    },
+    autoScale() {
+      return this.logo.autoScale;
+    },
+  },
+  methods: {
+    getLogo() {
+      // passes all logo data and relevant component props in request
+      /*const payload = {
+        ...this.$store.state.logosMap[this.id],
+        preLoad: this.preLoad,
+        bgTransparence: this.bgTransparence,
+        insideSVG: this.insideSVG,
+        template: this.$options._componentTag
+      }*/
+      function copyObject(obj) {
+          var copy = {};
+          for (var key in obj) {
+              if (obj.hasOwnProperty(key)) {
+                  copy[key] = obj[key];
+              }
+          }
+          return copy;
+      }
+
+      const payload = copyObject(this.logo);
+
+      const key = String(JSON.stringify(payload).hashCode());
+      if (window.post_cache && window.post_cache.hasOwnProperty(key)) {
+        this.$nextTick(function() {
+          this.process(window.post_cache[key]);
+        });
+      } else {
+        /*$.ajax({
+          url: 'https://app.brandmark.io/v3/logo.php',
+          type: 'POST',
+          data: { data: payload },
+          dataType: 'json',
+          tryCount: 0,
+          retryLimit: 3,
+          success: function(result) {
+            if (!result) {
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                // try again
+                $.ajax(this);
+                // mixpanel.track("Batch Error 200", {'retry': this.tryCount});
+                return;
+              }
+              mixpanel.track('Batch Error 200', { retry: -1 });
+              return;
+            }
+            window.post_cache[key] = result;
+            this.process(result);
+          }.bind(this),
+          error(xhr, textStatus) {
+            if (textStatus === 'abort') {
+              return false;
+            }
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+              // try again
+              $.ajax(this);
+            }
+          },
+          timeout: 60000
+        });*/
+
+        payload.v3 = true;
+
+        $.ajax({
+            url : '//render.namelix.com/process',
+            type : 'GET',
+            data :  payload,
+            dataType: 'json', 
+            tryCount : 0,
+            retryLimit : 30,
+            success : function(result) {
+                if(!result){
+                    this.tryCount++;
+                    if(this.tryCount > 10){
+                        this.url = '/logo-render-worker';
+                    }
+                    this.data = payload;
+                    if (this.tryCount <= this.retryLimit) {
+                        //try again - possibly no cors?
+                        window.setTimeout(function(){
+                            $.ajax(this);
+                        }.bind(this), 500);
+                        return;
+                    }
+                    return;
+                }
+
+                window.post_cache[key] = result;
+                this.process(result);
+            }.bind(this),
+            error : function(xhr, textStatus, errorThrown ) {
+                if(textStatus === 'abort'){
+                    return false;
+                }
+                this.tryCount++;
+                if(this.tryCount > 10){
+                    this.url = '/logo-render-worker';
+                }
+
+                this.data = payload;
+                if (this.tryCount <= this.retryLimit) {
+                    //try again
+                    window.setTimeout(function(){
+                        $.ajax(this);
+                    }.bind(this), 500);
+
+                    return;
+                }
+            },
+            timeout: 15000
+        });
+      }
+    },
+    getLogoThrottled: window._throttle(
+      function() {
+        /*// passes all logo data and relevant component props in request
+        const payload = {
+          ...this.$store.state.logosMap[this.id],
+          preLoad: this.preLoad,
+          bgTransparence: this.bgTransparence,
+          insideSVG: this.insideSVG,
+          template: this.$options._componentTag
+        }*/
+        function copyObject(obj) {
+          var copy = {};
+          for (var key in obj) {
+              if (obj.hasOwnProperty(key)) {
+                  copy[key] = obj[key];
+              }
+          }
+          return copy;
+        }
+        const payload = copyObject(this.logo);
+
+        const key = String(JSON.stringify(payload).hashCode());
+        if (window.post_cache && window.post_cache.hasOwnProperty(key)) {
+          this.$nextTick(function() {
+            this.process(window.post_cache[key]);
+          });
+        } else {
+          /*$.ajax({
+            url: 'https://app.brandmark.io/v3/logo.php',
+            type: 'POST',
+            data: { data: payload },
+            dataType: 'json',
+            tryCount: 0,
+            retryLimit: 3,
+            success: function(result) {
+              if (!result) {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                  // try again
+                  $.ajax(this);
+                  mixpanel.track('Batch Error 200', { retry: this.tryCount });
+                  return;
+                }
+                mixpanel.track('Batch Error 200', { retry: -1 });
+                return;
+              }
+              if (result && result.svg) {
+                window.post_cache[key] = result;
+                this.process(result);
+              }
+            }.bind(this),
+            error(xhr, textStatus, errorThrown) {
+              if (textStatus === 'abort') {
+                return false;
+              }
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                // try again
+                mixpanel.track('Batch Error', {
+                  retry: this.tryCount,
+                  status: textStatus,
+                  error: errorThrown,
+                  msg: xhr.responseJSON
+                });
+
+                $.ajax(this);
+                return;
+              }
+              mixpanel.track('Batch Error', {
+                retry: -1,
+                status: textStatus,
+                error: errorThrown,
+                msg: xhr.responseJSON
+              });
+            },
+            timeout: 60000
+          });*/
+          payload.v3 = true;
+          $.ajax({
+              url : '//render.namelix.com/process',
+              type : 'GET',
+              data :  payload,
+              dataType: 'json', 
+              tryCount : 0,
+              retryLimit : 30,
+              success : function(result) {
+                  if(!result){
+                      this.tryCount++;
+                      if(this.tryCount > 10){
+                          this.url = '/logo-render-worker';
+                      }
+                      this.data = payload;
+                      if (this.tryCount <= this.retryLimit) {
+                          //try again - possibly no cors?
+                          window.setTimeout(function(){
+                              $.ajax(this);
+                          }.bind(this), 500);
+                          return;
+                      }
+                      return;
+                  }
+
+                  window.post_cache[key] = result;
+                  this.process(result);
+              }.bind(this),
+              error : function(xhr, textStatus, errorThrown ) {
+                  if(textStatus === 'abort'){
+                      return false;
+                  }
+                  this.tryCount++;
+                  if(this.tryCount > 10){
+                      this.url = '/logo-render-worker';
+                  }
+                  this.data = payload;
+                  if (this.tryCount <= this.retryLimit) {
+                      //try again
+                      window.setTimeout(function(){
+                          $.ajax(this);
+                      }.bind(this), 500);
+
+                      return;
+                  }
+              },
+              timeout: 15000
+          });
+        }
+      },
+      500,
+      { leading: false }
+    ),
+    update() {        
+      const self = this;
+
+      $(this.$el).find('.logo-inner').css('background',this.bgTransparence ? 'none' : this.backgroundColor[0].hex);
+      
+      $(this.$el).find('#title > path, #title g > *').not('linearGradient').not('radialGradient').attr('stroke-width', this.titleBoldness).attr('stroke-linejoin','miter').attr('stroke-miterlimit', 2);
+        
+      $(this.$el).find('#title').removeAttr('aria-label');
+      $(this.$el).find('#slogan').removeAttr('aria-label');
+      
+      
+      if (this.titleColor.length < 2) {
+        $(this.$el).find('#title > path, #title > g > *').not('linearGradient').not('radialGradient').not('.highlight').attr('fill', this.titleColor[0].hex).attr('stroke', this.titleColor[0].hex);
+		if(this.titleFamily.includes('Shadow') || this.titleFamily.includes('Highlight')){
+			// no highlight color, hide highlights
+			$(this.$el).find('#title > g .highlight').attr('opacity', 0);
+		}
+		else{
+			$(this.$el).find('#title > g .highlight').attr('opacity', 1);
+		}
+      } else {
+        const title_total = $(this.$el).find('#title > path').length - 1;
+        const title_color = this.titleColor.slice().sort(function(a, b) {
+          return a.location - b.location;
+        });
+        $(this.$el)
+          .find('#title > path')
+          .each(function(i) {
+            const percent = i / title_total;
+            let a = title_color[0];
+            let b = title_color[1];
+            for (let j = 0; j < title_color.length - 1; j++) {
+              if (
+                title_color[j].location <= percent &&
+                title_color[j + 1].location >= percent
+              ) {
+                a = title_color[j];
+                b = title_color[j + 1];
+                break;
+              }
+            }
+            const hex = tinycolor
+              .mix(
+                tinycolor(a.hex),
+                tinycolor(b.hex),
+                100 * ((percent - a.location) / (b.location - a.location))
+              )
+              .toHexString();
+
+            $(this).attr('fill', hex);
+            $(this).attr('stroke', hex);
+          });
+
+          // for color fonts
+          $(this.$el).find('#title g .c1').attr('fill', this.titleColor[0].hex).attr('stroke', this.titleColor[0].hex);
+      
+          $(this.$el).find('#title g .c2, #title g .c3').attr('fill', this.titleColor[1].hex).attr('stroke', this.titleColor[1].hex);
+          
+          if(this.titleColor.length > 2){
+              $(this.$el).find('#title g .c3').attr('fill', this.titleColor[2].hex).attr('stroke', this.titleColor[2].hex);
+          }
+          
+		  // last color used for shaded highlight
+		  let highlight_color = this.titleColor[this.titleColor.length-1];
+		  $(this.$el).find('#title > g .highlight').attr('opacity', highlight_color.location);
+		  
+		  if(this.titleFamily.includes('Shadow') || this.titleFamily.includes('Highlight')){
+			  $(this.$el).find('#title > g linearGradient > stop, #title > g radialGradient > stop').each(function(){
+				  let style = $(this).attr('style');
+				  style = style.split(';');
+				  style.shift();
+				  style.unshift('stop-color:'+highlight_color.hex);
+				  $(this).attr('style', style.join(';'));
+			  });			  
+          }
+		  		  
+          // gradient fonts
+          if(this.titleFamily.startsWith('Brandmark') && this.titleFamily.includes('Gradient')){
+              if(this.titleFamily.includes('3D')){              
+              
+                  // each shape is a gradient, for 3d effect
+                  if(title_color.length == 2){
+                    let gradient = $(this.$el).find('#3d_gradient2-'+this.id);
+                    gradient.find('stop').eq(0).attr('stop-color', title_color[0].hex).attr('offset',100*title_color[0].location+'%');
+                    gradient.find('stop').eq(1).attr('stop-color', title_color[1].hex).attr('offset',100*title_color[1].location+'%');
+                    $(this.$el).find('#title > g > *').not('linearGradient').not('radialGradient').attr('fill', 'url(#3d_gradient2-'+this.id+')').attr('stroke', 'url(#3d_gradient2-'+this.id+')');
+                  }
+                  else if(title_color.length > 2){
+                      let gradient = $(this.$el).find('#3d_gradient3-'+this.id);
+                      gradient.find('stop').eq(0).attr('stop-color', title_color[0].hex).attr('offset',100*title_color[0].location+'%');
+                      gradient.find('stop').eq(1).attr('stop-color', title_color[1].hex).attr('offset',100*title_color[1].location+'%');
+                      gradient.find('stop').eq(2).attr('stop-color', title_color[2].hex).attr('offset',100*title_color[2].location+'%');
+                      $(this.$el).find('#title > g > *').not('linearGradient').not('radialGradient').attr('fill', 'url(#3d_gradient3-'+this.id+')').attr('stroke', 'url(#3d_gradient3-'+this.id+')');
+                  }
+              }
+              else{
+                  // simple color range
+                  $(this.$el).find('#title > g').each(function() {
+                      
+                      const group_elements = $(this).children().not('linearGradient').not('radialGradient');
+                      const total_elements = group_elements.length - 1;
+                      
+                      group_elements.each(function(i){
+                        const percent = i / total_elements;
+                        let a = title_color[0];
+                        let b = title_color[1];
+                        for (let j = 0; j < title_color.length - 1; j++) {
+                          if (
+                            title_color[j].location <= percent &&
+                            title_color[j + 1].location >= percent
+                          ) {
+                            a = title_color[j];
+                            b = title_color[j + 1];
+                            break;
+                          }
+                        }
+                        const hex = tinycolor
+                          .mix(
+                            tinycolor(a.hex),
+                            tinycolor(b.hex),
+                            100 * ((percent - a.location) / (b.location - a.location))
+                          )
+                          .toHexString();
+
+                        $(this).attr('fill', hex);
+                        $(this).attr('stroke', hex);
+                      });
+                  });
+              }
+          }
+      }
+      
+      $(this.$el)
+        .find('#slogan path')
+        .attr('stroke-width', this.sloganBoldness)
+		.attr('stroke-linejoin','miter')
+		.attr('stroke-miterlimit', 2);
+
+      if (this.sloganColor.length < 2) {
+        $(this.$el)
+          .find('#slogan path')
+          .attr('fill', this.sloganColor[0].hex);
+        $(this.$el)
+          .find('#slogan path')
+          .attr('stroke', this.sloganColor[0].hex);
+      } else {
+        const slogan_total = $(this.$el).find('#slogan path').length - 1;
+        const slogan_color = this.sloganColor.slice().sort(function(a, b) {
+          return a.location - b.location;
+        });
+        $(this.$el)
+          .find('#slogan path')
+          .each(function(i) {
+            const percent = i / slogan_total;
+            let a = slogan_color[0];
+            let b = slogan_color[1];
+            for (let j = 0; j < slogan_color.length - 1; j++) {
+              if (
+                slogan_color[j].location <= percent &&
+                slogan_color[j + 1].location >= percent
+              ) {
+                a = slogan_color[j];
+                b = slogan_color[j + 1];
+                break;
+              }
+            }
+            const hex = tinycolor
+              .mix(
+                tinycolor(a.hex),
+                tinycolor(b.hex),
+                100 * ((percent - a.location) / (b.location - a.location))
+              )
+              .toHexString();
+
+            $(this).attr('fill', hex);
+            $(this).attr('stroke', hex);
+          });
+      }
+
+      const icon = $(this.$el).find('#icon');
+      icon.removeAttr('transform');
+
+      $(this.$el)
+        .find('path')
+        .show();
+        
+      $(this.$el)
+        .find('#title > g')
+        .show();
+        
+      // color icon
+      if (this.icon && this.showIcon) {
+        icon.show();
+        let icon_url;
+        if (this.icon.type == 'noun') {
+          icon_url = `https://app.brandmark.io/nounpreview/${this.icon.id}.png`;
+        } else {
+          icon_url = this.icon.preview;
+        }
+        const img = new Image();
+        img.onload = function() {
+          self.colorImage(icon, img, tinycolor(self.iconColor[0].hex).toRgb());
+        };
+        img.src = icon_url;
+        img.crossOrigin = "Anonymous";
+      } else {
+        icon.hide();
+      }
+      
+      // icon container
+      const icon_container = $(this.$el).find('#icon_container');
+      icon_container.removeAttr('transform');
+      
+      if (this.icon && this.showIcon && this.iconContainer && this.showIconContainer) {
+        icon_container.show();
+        let icon_container_url;
+        if (this.iconContainer.type == 'noun') {
+          icon_container_url = `https://app.brandmark.io/nounpreview/${this.iconContainer.id}.png`;
+        } else {
+          icon_container_url = this.icon.preview;
+        }
+        const img_icon_container = new Image();
+        img_icon_container.onload = function() {
+          self.colorImage(icon_container, img_icon_container, tinycolor(self.iconContainerColor[0].hex).toRgb());
+        };
+        img_icon_container.src = icon_container_url;
+        img_icon_container.crossOrigin = "Anonymous";
+      } else {
+        icon_container.hide();
+      }
+
+      // color container
+      const container = $(this.$el).find('#container');
+
+      if (this.container && this.showContainer) {
+        container.show();
+        let container_url;
+        if (container.type == 'noun') {
+          container_url = `https://app.brandmark.io/v3/icon_large/?id=${this.container.id}`;
+        } else {
+          container_url = this.container.preview;
+        }
+        const container_img = new Image();
+        container_img.onload = function() {
+          self.colorImage(
+            container,
+            container_img,
+            tinycolor(self.containerColor[0].hex).toRgb()
+          );
+        };
+        container_img.src = container_url;
+        container_img.crossOrigin = "Anonymous";
+      } else {
+        container.hide();
+      }
+
+      const dim_container = 480 * this.containerScale;
+      container.attr('x', 512 - dim_container / 2);
+      container.attr('y', 384 - dim_container / 2);
+      container.attr('width', dim_container);
+      container.attr('height', dim_container);
+
+      // reset icon replacement
+      let iconindex = this.getIconIndex();
+      
+      if (iconindex >= 0) {
+        const letter = this.bbox[iconindex];
+        if (letter.replaced && this.layout != 2) {
+          this.bbox[iconindex] = letter.replaced;
+        }
+      }
+
+      let layout_width = 924; // 50px margin
+      let layout_center_x = 512;
+      let layout_center_y = 384;
+
+      if (this.container && this.containerBox && this.showContainer) {
+        layout_width = dim_container * (this.containerBox.width / 200);
+        layout_center_x =
+          512 -
+          dim_container / 2 +
+          dim_container *
+            ((this.containerBox.offsetx + this.containerBox.width / 2) / 200);
+        layout_center_y =
+          384 -
+          dim_container / 2 +
+          dim_container *
+            ((this.containerBox.offsety + this.containerBox.height / 2) / 200);
+      }
+      const layout_margin = (1024 - layout_width) / 2;
+
+      // layout
+      if (this.icon && this.showIcon) {
+        if (this.layout == 0) {
+          // vertical layout, icon top
+          const titlewrap = this.wrap(
+            'title',
+            this.title,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.titleScale,
+            this.titleLetterSpace,
+            this.titleLineSpace,
+            this.titleAlign
+          );
+
+          const sloganwrap = this.wrap(
+            'slogan',
+            this.slogan,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.sloganScale,
+            this.sloganLetterSpace,
+            this.sloganLineSpace,
+            this.sloganAlign
+          );
+
+          // center icon
+          const dim = 150 * this.iconScale;
+          icon.attr('x', 512 - dim / 2);
+          icon.attr('y', 0);
+          icon.attr('width', dim);
+          icon.attr('height', dim);
+        
+          if(this.iconContainer && this.showIconContainer){
+              const dimc = 150 * this.iconContainerScale;
+              icon_container.attr('x', 512 - dimc / 2);
+              icon_container.attr('y', (dim-dimc)/2);
+              icon_container.attr('width', dimc);
+              icon_container.attr('height', dimc);
+          }
+          
+          const iconwrap = {
+            bounds: { x: 512 - dim / 2, y: 0, width: dim, height: dim },
+            lines: [
+              [
+                {
+                  id: 'icon',
+                  x: 512 - dim / 2,
+                  y: 0,
+                  width: dim,
+                  height: dim
+                }
+              ]
+            ]
+          };
+
+          iconwrap.align = this.titleAlign;
+          titlewrap.align = this.titleAlign;
+          sloganwrap.align = this.sloganAlign;
+
+          icon.removeAttr('transform');
+          icon_container.removeAttr('transform');
+
+          this.distribute(
+            [iconwrap, titlewrap, sloganwrap],
+            [18 * this.iconSpace, 18 * this.sloganLineSpace]
+          );
+
+          const xmin = Math.min(
+            titlewrap.bounds.x,
+            sloganwrap.bounds.x,
+            iconwrap.bounds.x
+          );
+          const xmax = Math.max(
+            titlewrap.bounds.x + titlewrap.bounds.width,
+            sloganwrap.bounds.x + sloganwrap.bounds.width,
+            iconwrap.bounds.x + iconwrap.bounds.width
+          );
+          const xcenter = (xmax + xmin) / 2;
+
+          $(this.$el)
+            .find('#logo-center')
+            .attr(
+              'transform',
+              `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`
+            );
+        } else if (this.layout == 3) {
+          // vertical layout, icon bottom
+          const titlewrap = this.wrap(
+            'title',
+            this.title,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.titleScale,
+            this.titleLetterSpace,
+            this.titleLineSpace,
+            this.titleAlign
+          );
+          const sloganwrap = this.wrap(
+            'slogan',
+            this.slogan,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.sloganScale,
+            this.sloganLetterSpace,
+            this.sloganLineSpace,
+            this.sloganAlign
+          );
+
+          // center icon
+          const dim = 150 * this.iconScale;
+          icon.attr('x', 512 - dim / 2);
+          icon.attr('y', 0);
+          icon.attr('width', dim);
+          icon.attr('height', dim);
+          
+          if(this.iconContainer && this.showIconContainer){
+              const dimc = 150 * this.iconContainerScale;
+              icon_container.attr('x', 512 - dimc / 2);
+              icon_container.attr('y', (dim-dimc)/2);
+              icon_container.attr('width', dimc);
+              icon_container.attr('height', dimc);
+          }
+          
+          const iconwrap = {
+            bounds: { x: 512 - dim / 2, y: 0, width: dim, height: dim },
+            lines: [
+              [
+                {
+                  id: 'icon',
+                  x: 512 - dim / 2,
+                  y: 0,
+                  width: dim,
+                  height: dim
+                }
+              ]
+            ]
+          };
+
+          iconwrap.align = this.sloganAlign;
+          titlewrap.align = this.titleAlign;
+          sloganwrap.align = this.sloganAlign;
+
+          icon.removeAttr('transform');
+          icon_container.removeAttr('transform');
+
+          this.distribute(
+            [titlewrap, sloganwrap, iconwrap],
+            [18 * this.sloganLineSpace, 18 * this.titleLineSpace]
+          );
+          const xmin = Math.min(
+            titlewrap.bounds.x,
+            sloganwrap.bounds.x,
+            iconwrap.bounds.x
+          );
+          const xmax = Math.max(
+            titlewrap.bounds.x + titlewrap.bounds.width,
+            sloganwrap.bounds.x + sloganwrap.bounds.width,
+            iconwrap.bounds.x + iconwrap.bounds.width
+          );
+          const xcenter = (xmax + xmin) / 2;
+
+          $(this.$el)
+            .find('#logo-center')
+            .attr(
+              'transform',
+              `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`
+            );
+        } else if (this.layout == 1) {
+          // horizontal layout
+
+          const icon_width = 150 * this.iconScale * (this.iconBox.width / 200);
+          const icon_height = 150 * this.iconScale * (this.iconBox.height / 200);
+
+          const spacing = 50 * this.iconSpace;
+
+          const titlewrap = this.wrap(
+            'title',
+            this.title,
+            {
+              x: icon_width + spacing,
+              y: layout_margin,
+              width: layout_width - icon_width,
+              height: 668
+            },
+            this.titleScale,
+            this.titleLetterSpace,
+            this.titleLineSpace,
+            this.titleAlign
+          );
+
+          const sloganwrap = this.wrap(
+            'slogan',
+            this.slogan,
+            {
+              x: icon_width + spacing,
+              y: layout_margin,
+              width: layout_width - icon_width,
+              height: 668
+            },
+            this.sloganScale,
+            this.sloganLetterSpace,
+            this.sloganLineSpace,
+            this.sloganAlign
+          );
+
+
+          titlewrap.align = this.titleAlign;
+          sloganwrap.align = this.sloganAlign;
+          
+          this.distribute([titlewrap, sloganwrap], [18 * this.sloganLineSpace]);
+
+          const xmin = Math.min(titlewrap.bounds.x, sloganwrap.bounds.x);
+          const xmax = Math.max(
+            titlewrap.bounds.x + titlewrap.bounds.width,
+            sloganwrap.bounds.x + sloganwrap.bounds.width
+          );
+          
+          
+
+          const xicon = xmin - 150 * this.iconScale * ((this.iconBox.offsetx + this.iconBox.width) / 200) - spacing;
+          const yicon = 384 - icon_height / 2 - 150 * this.iconScale * (this.iconBox.offsety / 200);
+                    
+          icon.attr('x', xicon);
+          icon.attr('y',yicon);
+          icon.attr('width', 150 * this.iconScale);
+          icon.attr('height', 150 * this.iconScale);
+
+          icon.removeAttr('transform');
+
+          if(this.iconContainer && this.showIconContainer){
+              const xicon_center = xmin - 150 * this.iconScale * (this.iconBox.width/2) / 200 - spacing;
+              const yicon_center = 384;
+              // center icon container on icon
+              const xicon_container = xicon_center - (150*this.iconContainerScale)/2;
+              const yicon_container = yicon_center - (150*this.iconContainerScale)/2;
+              icon_container.attr('x', xicon_container);
+              icon_container.attr('y', yicon_container);
+              icon_container.attr('width', 150 * this.iconContainerScale);
+              icon_container.attr('height', 150 * this.iconContainerScale);
+
+              icon_container.removeAttr('transform');
+          }
+          
+          // after adding the icon, the design is too far left. Now we center the whole thing
+          const xcenter = (xmax + xicon) / 2;
+
+          $(this.$el)
+            .find('#logo-center')
+            .attr(
+              'transform',
+              `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`
+            );
+        } else if (this.layout == 4) {
+          // horizontal layout, icon right
+          const icon_width = 150 * this.iconScale * (this.iconBox.width / 200);
+          const icon_height =
+            150 * this.iconScale * (this.iconBox.height / 200);
+
+          const spacing = 50 * this.iconSpace;
+
+          const titlewrap = this.wrap(
+            'title',
+            this.title,
+            {
+              x: 0,
+              y: layout_margin,
+              width: layout_width - icon_width - spacing,
+              height: 668
+            },
+            this.titleScale,
+            this.titleLetterSpace,
+            this.titleLineSpace,
+            this.titleAlign
+          );
+          const sloganwrap = this.wrap(
+            'slogan',
+            this.slogan,
+            {
+              x: 0,
+              y: layout_margin,
+              width: layout_width - icon_width - spacing,
+              height: 668
+            },
+            this.sloganScale,
+            this.sloganLetterSpace,
+            this.sloganLineSpace,
+            this.sloganAlign
+          );
+
+          titlewrap.align = this.titleAlign;
+          sloganwrap.align = this.sloganAlign;
+          this.distribute([titlewrap, sloganwrap], [18 * this.sloganLineSpace]);
+
+          const xmin = Math.min(titlewrap.bounds.x, sloganwrap.bounds.x);
+          const xmax = Math.max(
+            titlewrap.bounds.x + titlewrap.bounds.width,
+            sloganwrap.bounds.x + sloganwrap.bounds.width
+          );
+
+          const xicon = xmax - 150 * this.iconScale * (this.iconBox.offsetx / 200) + spacing;
+          const yicon = 384 - icon_height / 2 - 150 * this.iconScale * (this.iconBox.offsety / 200);
+          icon.attr('x', xicon);
+          icon.attr('y', yicon);
+          icon.attr('width', 150 * this.iconScale);
+          icon.attr('height', 150 * this.iconScale);
+
+          icon.removeAttr('transform');
+          
+          if(this.iconContainer && this.showIconContainer){
+              const xicon_center = xicon + 150 * this.iconScale * (this.iconBox.offsetx / 200) + (150 * this.iconScale * (this.iconBox.width/400))
+              const yicon_center = 384;
+              // center icon container on icon
+              const xicon_container = xicon_center - (150*this.iconContainerScale)/2;
+              const yicon_container = yicon_center - (150*this.iconContainerScale)/2;
+              icon_container.attr('x', xicon_container);
+              icon_container.attr('y', yicon_container);
+              icon_container.attr('width', 150 * this.iconContainerScale);
+              icon_container.attr('height', 150 * this.iconContainerScale);
+
+              icon_container.removeAttr('transform');
+          }
+          
+          const xcenter = (xmin + xicon + 150 * this.iconScale * ((this.iconBox.offsety + this.iconBox.width) / 200)) / 2;
+          $(this.$el).find('#logo-center').attr('transform', `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`);
+          
+        } else if (this.layout == 2) {
+            
+          // icon replacement
+          const index = this.getIconIndex();
+          const letter = this.bbox[index];
+          
+          
+          if (letter.id != 'icon') {
+            for (let i = 0; i < this.bbox.length; i++) {
+              if (this.bbox[i].id == 'icon' && this.bbox[i].replaced) {
+                this.bbox[i] = this.bbox[i].replaced;
+                break;
+              }
+            }
+
+            $(this.$el)
+              .find(`#${letter.id}`)
+              .hide();
+
+            const icon = $(this.$el).find('#icon');
+            icon.removeAttr('transform');
+            
+            const icon_container = $(this.$el).find('#icon_container');
+            icon_container.removeAttr('transform');
+            
+            let replacement = {};
+            if(this.icon && this.icon.hasOwnProperty('scale') && this.icon.scale == 'fixed'){
+                const dim = 200 * this.iconScale;
+                let iconx = 0;
+                let icony = 0;
+                if(this.icon.anchor == 'top-left'){
+                    iconx = letter.x - this.icon.left * this.iconScale;
+                    icony = letter.y - this.icon.top * this.iconScale;
+                }
+                else if(this.icon.anchor == 'top-right'){
+                    iconx = letter.x + letter.width - dim + this.icon.right * this.iconScale;
+                    icony = letter.y - this.icon.top * this.iconScale;
+                }
+                else if(this.icon.anchor == 'bottom-left'){
+                    iconx = letter.x - this.icon.left * this.iconScale;
+                    icony = letter.y + letter.height - dim + this.icon.bottom * this.iconScale;
+                }
+                else if(this.icon.anchor == 'bottom-right'){
+                    iconx = letter.x + letter.width - dim + this.icon.right * this.iconScale;
+                    icony = letter.y + letter.height - dim + this.icon.bottom * this.iconScale;
+                }
+                
+                icon.attr('width', dim);
+                icon.attr('height', dim);
+                icon.attr('x', iconx);
+                icon.attr('y', icony);
+                
+                replacement = {
+                  id: 'icon',
+                  width: letter.width,
+                  height: letter.height,
+                  icon_width: letter.width,
+                  icon_height: letter.height,
+                  x: letter.x,
+                  y: letter.y,
+                  letter: letter.letter,
+                  replaced: letter
+                };
+                
+                if(this.iconContainer && this.showIconContainer){
+                    const dimc = 200 * this.iconContainerScale;
+                    icon_container.attr('x', letter.x + letter.width/2 - dimc/2);
+                    icon_container.attr('y', letter.y + letter.height/2 - dimc/2);
+                    icon_container.attr('width', dimc);
+                    icon_container.attr('height', dimc);
+                }
+            }
+            else{
+                const localscale = letter.height / this.iconBox.height;
+                const dim = 200 * localscale * this.iconScale;
+
+                icon.attr('x', letter.x - this.iconBox.offsetx * localscale * this.iconScale);
+                icon.attr('y', letter.y - this.iconBox.offsety * localscale * this.iconScale - 0.5 * (this.iconBox.height * localscale * (this.iconScale - 1)));
+                icon.attr('width', dim);
+                icon.attr('height', dim);
+                
+                let max_width = this.iconBox.width * localscale * this.iconScale;
+                let max_height = letter.height * this.iconScale;
+                let icon_width = max_width;
+                let icon_height = max_height;
+                
+                if(this.iconContainer && this.showIconContainer){
+                    const localscalec = letter.height / this.iconContainerBox.height;
+                    const dimc = 200 * localscalec * this.iconContainerScale;
+                    icon_container.attr('x', letter.x - this.iconContainerBox.offsetx * localscalec * this.iconContainerScale);
+                    icon_container.attr('y', letter.y - this.iconContainerBox.offsety * localscalec * this.iconContainerScale - 0.5 * (this.iconContainerBox.height * localscalec * (this.iconContainerScale - 1)));
+                    icon_container.attr('width', dimc);
+                    icon_container.attr('height', dimc);
+                    
+                    max_width = this.iconContainerBox.width * localscalec * this.iconContainerScale;
+                    max_height = letter.height * this.iconContainerScale
+                }
+                
+                replacement = {
+                  id: 'icon',
+                  width: max_width,
+                  height: max_height,
+                  icon_width: icon_width,
+                  icon_height: icon_height,
+                  x: letter.x,
+                  y: letter.y,
+                  letter: letter.letter,
+                  replaced: letter
+                };
+            }
+            
+            if (isNumeric(letter.kerning)) {
+              replacement.kerning = letter.kerning;
+            }
+
+            this.bbox[index] = replacement;
+          } else if (letter.replaced) {
+            $(this.$el)
+              .find(`#${letter.replaced.id}`)
+              .hide();
+
+            const icon = $(this.$el).find('#icon');
+            icon.show();
+            
+            if(this.iconContainer && this.showIconContainer){
+                icon_container.show();
+            }
+            if(this.icon && this.icon.hasOwnProperty('scale') && this.icon.scale == 'fixed'){
+                const dim = 200 * this.iconScale;
+
+                let icon_width = letter.replaced.width * this.iconScale;
+                let icon_height = letter.replaced.height * this.iconScale;
+
+                if(this.icon.anchor == 'top-left'){
+                    icon.attr('x', letter.replaced.x - this.icon.left * this.iconScale);
+                    icon.attr('y', letter.replaced.y - this.icon.top * this.iconScale);
+                }
+                else if(this.icon.anchor == 'top-right'){
+                    icon.attr('x', letter.replaced.x + letter.replaced.width - dim + this.icon.right * this.iconScale);
+                    icon.attr('y', letter.replaced.y - this.icon.offsety * this.iconScale);
+                }
+                else if(this.icon.anchor == 'bottom-left'){
+                    icon.attr('x', letter.replaced.x - this.icon.left * this.iconScale);
+                    icon.attr('y', letter.replaced.y + letter.replaced.height - dim + this.icon.bottom * this.iconScale);
+                }
+                else if(this.icon.anchor == 'bottom-right'){
+                    icon.attr('x', letter.replaced.x + letter.replaced.width - dim + this.icon.right * this.iconScale);
+                    icon.attr('y', letter.replaced.y + letter.replaced.height - dim + this.icon.bottom * this.iconScale);
+                }
+                icon.attr('width', dim);
+                icon.attr('height', dim);
+                
+                
+                letter.width = icon_width;
+                letter.icon_width = icon_width;
+                letter.height = icon_height;
+                letter.icon_height = icon_height;
+                
+                if(this.iconContainer && this.showIconContainer){
+                    const dimc = 200 * this.iconContainerScale;
+                    icon_container.attr('x', letter.replaced.x + letter.replaced.width/2 - dimc/2);
+                    icon_container.attr('y', letter.replaced.y + letter.replaced.height/2 - dimc/2);
+                    icon_container.attr('width', dimc);
+                    icon_container.attr('height', dimc);                    
+                    
+                    letter.width = letter.replaced.width * this.iconContainerScale;
+                    letter.height = letter.replaced.height * this.iconContainerScale;
+                }
+            }
+            else{
+                const localscale = letter.replaced.height / this.iconBox.height;
+                const dim = 200 * localscale * this.iconScale;
+
+                let icon_width = this.iconBox.width * localscale * this.iconScale;
+                let icon_height = letter.replaced.height * this.iconScale;
+
+                letter.width = icon_width;
+                letter.icon_width = icon_width;
+                letter.height = icon_height;
+                letter.icon_height = icon_height;
+                
+                icon.attr('x', letter.replaced.x - this.iconBox.offsetx * localscale * this.iconScale);
+                icon.attr('y', letter.replaced.y - this.iconBox.offsety * localscale * this.iconScale - 0.5 * (this.iconBox.height * localscale * (this.iconScale - 1)));
+                icon.attr('width', dim);
+                icon.attr('height', dim);
+                
+                if(this.iconContainer && this.showIconContainer){
+                    const localscalec = letter.replaced.height / this.iconContainerBox.height;
+                    const dimc = 200 * localscalec * this.iconContainerScale;
+
+                    letter.width = this.iconContainerBox.width * localscalec * this.iconContainerScale;
+                    letter.height = letter.replaced.height * this.iconContainerScale;
+
+                    icon_container.attr('x', letter.replaced.x - this.iconContainerBox.offsetx * localscalec * this.iconContainerScale);
+                    icon_container.attr('y', letter.replaced.y - this.iconContainerBox.offsety * localscalec * this.iconContainerScale - 0.5 * (this.iconContainerBox.height * localscalec * (this.iconContainerScale - 1)));
+                    icon_container.attr('width', dimc);
+                    icon_container.attr('height', dimc);
+                }
+            }
+          }
+
+          $(this.$el).find('#logo-center').removeAttr('transform');
+
+          const titlewrap = this.wrap(
+            'title',
+            this.title,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.titleScale,
+            this.titleLetterSpace,
+            this.titleLineSpace,
+            this.titleAlign
+          );
+          const sloganwrap = this.wrap(
+            'slogan',
+            this.slogan,
+            {
+              x: layout_margin,
+              y: layout_margin,
+              width: layout_width,
+              height: 668
+            },
+            this.sloganScale,
+            this.sloganLetterSpace,
+            this.sloganLineSpace,
+            this.sloganAlign
+          );
+
+          titlewrap.align = this.titleAlign;
+          sloganwrap.align = this.sloganAlign;
+
+          this.distribute([titlewrap, sloganwrap], [24 * this.sloganLineSpace]);
+
+          const xmin = Math.min(titlewrap.bounds.x, sloganwrap.bounds.x);
+          const xmax = Math.max(
+            titlewrap.bounds.x + titlewrap.bounds.width,
+            sloganwrap.bounds.x + sloganwrap.bounds.width
+          );
+          const xcenter = (xmin + xmax) / 2;
+          $(this.$el)
+            .find('#logo-center')
+            .attr(
+              'transform',
+              `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`
+            );
+        }
+      } else {
+        const index = this.getIconIndex();
+        const letter = this.bbox[index];
+        if(letter.id == 'icon'){
+            this.bbox[index] = letter.replaced;
+        }
+        
+        $(this.$el)
+              .find('#title > path, #title > g')
+              .show().removeAttr('transform');
+        const titlewrap = this.wrap(
+          'title',
+          this.title,
+          {
+            x: layout_margin,
+            y: layout_margin,
+            width: layout_width,
+            height: 668
+          },
+          this.titleScale,
+          this.titleLetterSpace,
+          this.titleLineSpace,
+          this.titleAlign
+        );
+        const sloganwrap = this.wrap(
+          'slogan',
+          this.slogan,
+          {
+            x: layout_margin,
+            y: layout_margin,
+            width: layout_width,
+            height: 668
+          },
+          this.sloganScale,
+          this.sloganLetterSpace,
+          this.sloganLineSpace,
+          this.sloganAlign
+        );
+
+        titlewrap.align = this.titleAlign;
+        sloganwrap.align = this.sloganAlign;
+        
+        this.distribute([titlewrap, sloganwrap], [18 * this.sloganLineSpace]);
+        const xmin = Math.min(titlewrap.bounds.x, sloganwrap.bounds.x);
+        const xmax = Math.max(
+          titlewrap.bounds.x + titlewrap.bounds.width,
+          sloganwrap.bounds.x + sloganwrap.bounds.width
+        );
+        const xcenter = (xmin + xmax) / 2;
+        $(this.$el)
+          .find('#logo-center')
+          .attr(
+            'transform',
+            `translate(${layout_center_x - xcenter} ${layout_center_y - 384})`
+          );
+      }
+
+      $(this.$el).find('#container').attr('transform', `translate(${this.containerX} ${this.containerY})`);
+      $(this.$el).find('#title').attr('transform', `translate(${this.titleX} ${this.titleY})`);
+      $(this.$el).find('#slogan').attr('transform', `translate(${this.sloganX} ${this.sloganY})`);
+
+      const xicon = icon.attr('x') || 0;
+      const yicon = icon.attr('y') || 0;
+
+      if(this.layout == 2){
+          // icon replacement layout, icon should move with title
+          icon.attr('x', parseInt(xicon) + this.iconX + this.titleX/this.titleScale);
+          icon.attr('y', parseInt(yicon) + this.iconY + this.titleY/this.titleScale);
+      }
+      else{
+          icon.attr('x', parseInt(xicon) + this.iconX);
+          icon.attr('y', parseInt(yicon) + this.iconY);
+      }
+
+      if(this.layout != 2){
+          const xicon_container = icon_container.attr('x') || 0;
+          const yicon_container = icon_container.attr('y') || 0;
+
+          icon_container.attr('x', parseInt(xicon_container) + this.iconX);
+          icon_container.attr('y', parseInt(yicon_container) + this.iconY);
+      }
+    },
+replaceSVG(svg, elements) {
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(svg, 'text/xml');
+
+    function getCharacter(chars, ch) {
+        for (var i = 0; i < chars.length; i++) {
+            if (chars[i].character === ch) {
+                return chars[i];
+            }
+        }
+        return false;
+    }
+
+    function guidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function replaceGradientIds(svg) {
+        for (var i = 1; i < 15; i++) {
+            var id = guidv4();
+            svg = svg.replace(new RegExp('SVGID_' + i + '_', 'g'), id);
+        }
+        return svg;
+    }
+
+    function getElement(elements, id) {
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i][0].trim() === id.trim()) {
+                return elements[i];
+            }
+        }
+        return false;
+    }
+
+
+    var font = window.custom_fonts[this.titleFamily];
+
+    if(window.custom_ligatures.hasOwnProperty(this.titleFamily)){
+        var ligatures = window.custom_ligatures[this.titleFamily];
+    }
+    else{
+        var ligatures = [];
+    }
+
+    var titleStripped = this.title.replace(/\s+/g, '');
+
+    var letters = [];
+    for (var i = 0; i < titleStripped.length; i++) {
+        var c1 = titleStripped.charAt(i).trim();
+        var c2 = i < titleStripped.length - 1 ? titleStripped.charAt(i + 1).trim() : '';
+
+        if (c1 === '~' || c1 === '^' || c2 === '_') {
+            letters.push(c1 + c2);
+            i++;
+        } else if (c1 === '(' && i + 3 < titleStripped.length && titleStripped.charAt(i + 3) === ')' && ligatures.includes(titleStripped.substring(i+1,i+3))) {
+            letters.push(titleStripped.substring(i, i + 4));
+            i += 3;
+        } else {
+            if (c1 !== '') {
+                letters.push(c1);
+            }
+        }
+    }
+
+    var title = xmlDoc.getElementById('title');
+
+    var toAdd = [];
+    var toDelete = [];
+    var ids = [];
+    var characters = [];
+
+    var i = 0;
+    var childNodes = title.childNodes;
+    for (var j = 0; j < childNodes.length; j++) {
+        var child = childNodes[j];
+        if (child.getAttribute) {
+            var id = child.getAttribute('id');
+
+            var ch = getCharacter(font, letters[i]);
+            i++;
+            if (!ch) {
+                continue;
+            }
+
+            var group = parser.parseFromString(replaceGradientIds(ch.svg), 'text/xml').documentElement;
+            characters.push(ch);
+            toDelete.push(child);
+            toAdd.push(group);
+            ids.push(id);
+        }
+    }
+
+    for (var i = 0; i < toDelete.length; i++) {
+        var group = toAdd[i];
+        group = title.appendChild(group);
+
+        if (!group) {
+            continue;
+        }
+
+        var replaced = title.replaceChild(group, toDelete[i]);
+
+        if (replaced === false) {
+            continue;
+        }
+
+        var id = ids[i];
+        group.setAttribute('id', id);
+        var ch = characters[i];
+        var el = getElement(elements, id);
+        group.setAttribute('aria-label', ch.character);
+
+        if (!el) {
+            continue;
+        }
+        var x = el[1] - ch.offsetx;
+        var y = el[2] - ch.offsety;
+
+        var childNodes = group.childNodes;
+        for (var j = 0; j < childNodes.length; j++) {
+            var child = childNodes[j];
+            if (child.tagName && child.tagName !== 'linearGradient') {
+                child.setAttribute('transform', 'translate(' + x + ' ' + y + ')');
+            }
+        }
+    }
+
+    var serializer = new XMLSerializer();
+    svg = serializer.serializeToString(xmlDoc);
+    return svg;
+},
+    // process svg update request
+    process(result) {
+      const self = this;
+
+      if(this.titleFamily.includes('Color') || this.titleFamily.includes('Shadow') || this.titleFamily.includes('Gradient') || this.titleFamily.includes('Spectrum')){
+          this.svg = this.replaceSVG(result.svg, result.elements);
+      }
+      else{
+          this.svg = result.svg;
+      }
+
+      const bbox = [];
+      let prevb = false;
+
+      for (let i = 0; i < result.elements.length; i++) {
+        const b = result.elements[i];
+
+        const bb = {
+          id: b[0],
+          x: parseFloat(b[1]),
+          y: parseFloat(b[2]),
+          width: parseFloat(b[3]),
+          height: parseFloat(b[4])
+        };
+
+        if (
+          i > 0 &&
+          prevb &&
+          bb.id.substr(0, 4) === 'path' &&
+          prevb.id.substr(0, 4) === 'path'
+        ) {
+          bb.kerning = bb.x - (prevb.x + prevb.width);
+        }
+
+        prevb = bb;
+        bbox.push(bb);
+      }
+
+      this.bbox = bbox;
+      
+      this.iconBox = result.icon_box;
+      this.iconContainerBox = result.icon_container_box;
+      this.containerBox = result.container_box;
+      
+      
+      this.scale();
+
+      if (this.icon) {
+        let icon_url;
+        if (this.icon.type == 'noun') {
+          icon_url = `https://app.brandmark.io/nounpreview/${this.icon.id}.png`;
+        } else {
+          icon_url = this.icon.preview;
+        }
+        const img = new Image();
+        img.onload = function() {
+          self.icon_loaded = true;
+          self.checkLoaded();
+        };
+        img.src = icon_url;
+        img.crossOrigin = "Anonymous";
+      } else {
+        this.checkLoaded();
+      }
+      
+      if (this.iconContainer) {
+        let icon_container_url;
+        if (this.iconContainer.type == 'noun') {
+          icon_container_url = `https://app.brandmark.io/nounpreview/${this.iconContainer.id}.png`;
+        } else {
+          icon_container_url = this.iconContainer.preview;
+        }
+        const img = new Image();
+        img.onload = function() {
+          self.icon_container_loaded = true;
+          self.checkLoaded();
+        };
+        img.src = icon_container_url;
+        img.crossOrigin = "Anonymous";
+      } else {
+        this.checkLoaded();
+      }
+
+      if (this.container) {
+        let container_url;
+        if (this.container.type == 'noun') {
+          container_url = `https://app.brandmark.io/v3/icon_large/?id=${this.container.id}`;
+        } else {
+          container_url = this.container.preview;
+        }
+        const container_img = new Image();
+        container_img.onload = function() {
+          self.container_loaded = true;
+          self.checkLoaded();
+        };
+        container_img.src = container_url;
+        container_img.crossOrigin = "Anonymous";
+      } else {
+        this.checkLoaded();
+      }
+
+      return false;
+    },
+    checkLoaded() {
+      if (this.icon && !this.icon_loaded) {
+        return false;
+      }
+      if (this.iconContainer && !this.icon_container_loaded) {
+        return false;
+      }
+      if (this.container && !this.container_loaded) {
+        return false;
+      }
+
+      this.loaded = true;
+    },
+    getIconIndex() {
+      let found_title = false;
+      let title_index = 0;
+      let found_char = false;
+      let count = 0;
+      let index = 0;
+      for (let i = 0; i < this.bbox.length; i++) {
+        if (found_title) {
+          index = i;
+          if (this.nthChar == count) {
+            found_char = true;
+            break;
+          }
+          count++;
+        }
+        if (this.bbox[i].id == 'title') {
+          found_title = true;
+          title_index = i;
+        }
+      }
+      
+      if(found_char){
+        return index;
+      }
+      return title_index+1;
+    },
+    getCharBox(key) {
+      const chars = [];
+      let found = false;
+
+      for (let i = 0; i < this.bbox.length; i++) {
+        if (this.bbox[i].id == key) {
+          found = true;
+        } else if (found) {
+          if (
+            this.bbox[i].id.substr(0, 4) == 'path' ||
+            this.bbox[i].id.substr(0, 4) == 'icon'
+          ) {
+            if (
+              this.bbox[i].width < 0.000001 ||
+              this.bbox[i].height < 0.000001
+            ) {
+              continue;
+            }
+            chars.push(this.bbox[i]);
+          } else {
+            break;
+          }
+        }
+      }
+
+      return chars;
+    },
+    scale() {
+      //return false;
+
+      if (!this.autoScale) {
+        return false;
+      }
+      let bounds = {
+        width: 1000,
+        height: 700,
+        x: 0,
+        y: 34
+      };
+
+      /*if (this.container && this.containerBox) {
+        const dim = 480 * this.containerScale;
+        bounds = {
+          x: 0,
+          y: 0,
+          width: (this.containerBox.width / 200) * dim,
+          height: (this.containerBox.height / 200) * dim
+        };
+      }*/
+
+      const titlewrap = this.wrap(
+        'title',
+        this.title,
+        bounds,
+        this.titleScale,
+        this.titleLetterSpace,
+        this.titleLineSpace,
+        this.titleAlign
+      );
+      let titlescale = 1;
+
+      let titlewidth = titlewrap.bounds.width;
+
+/*      if (this.layout == 2 && this.icon) {
+        const index = this.get_icon_index();
+        const letter = this.bbox[index];
+
+        titlewidth -= letter.width * this.titleScale;
+
+        const localscale = letter.height / this.iconBox.height;
+        titlewidth +=
+          this.iconBox.width * localscale * this.iconScale * this.titleScale;
+      }
+*/
+
+      // min width
+      if (this.container && this.containerBox) {
+        titlescale = (bounds.width * 0.8) / titlewidth;
+      } else if (titlewidth < 520) {
+        titlescale = 520 / titlewidth;
+      }
+
+      let sloganscale = 1;
+
+      const sloganwrap = this.wrap(
+        'slogan',
+        this.slogan,
+        bounds,
+        this.sloganScale,
+        this.sloganLetterSpace,
+        this.sloganLineSpace,
+        this.sloganAlign
+      );
+      /*if (
+        sloganwrap.lines.length == 1 &&
+        sloganwrap.bounds.width > titlewidth * titlescale
+      ) {*/
+      if (
+        sloganwrap.lines.length == 1
+      ){
+        sloganscale = (titlewidth * titlescale) / sloganwrap.bounds.width;
+      }
+
+      // align icon vertically
+/*      let iconscale = 1;
+      if ((this.layout == 1 || this.layout == 4) && this.icon && this.iconBox) {
+        const icon_width = 150 * this.iconScale * (this.iconBox.width / 200);
+        const icon_height = 150 * this.iconScale * (this.iconBox.height / 200);
+        const spacing = 50 * this.iconSpace;
+
+        let textheight = titlewrap.bounds.height * titlescale;
+        if (this.slogan && sloganwrap.bounds.height > 0) {
+          textheight +=
+            sloganwrap.bounds.height * sloganscale + 18 * this.sloganLineSpace;
+        }
+        iconscale = textheight / icon_height;
+
+        const finalwidth =
+          iconscale * icon_width +
+          spacing +
+          titlewrap.bounds.width * titlescale;
+
+        if (finalwidth > bounds.width) {
+          titlescale *= bounds.width / finalwidth;
+          sloganscale *= bounds.width / finalwidth;
+          iconscale *= bounds.width / finalwidth;
+        }
+      }*/
+      // set source data scale to false, to only scale once in lifetime
+      const iconscale = 1;
+      this.$emit('scale', titlescale, sloganscale, iconscale);
+    },
+    wrap(key, input, bounds, scale, letterspacing, linespacing, align) {
+      const chars = this.getCharBox(key)
+
+      function getwordwidth(word, scale, letterspacing) {
+        scale = parseFloat(scale)
+        letterspacing = parseFloat(letterspacing)
+
+        let width = 0
+        let first = true
+
+        for (let i = 0; i < word.length; i++) {
+          if (window.isNumeric(word[i].kerning) && !first) {
+            width += (word[i].kerning + letterspacing) * scale
+          }
+          if (word[i].width > 0.000001) {
+            width += word[i].width * scale
+            first = false
+          }
+        }
+
+        return width
+      }
+
+      // merge duplicate white space
+      input = input.split(/[ \t\r]+/).join(' ')
+
+      const words = input.match(/\S+/g)
+
+      if (!words) {
+        return {
+          bounds: { x: 0, y: 0, width: 0, height: 0 },
+          lines: [],
+        }
+      }
+      input = input.split('')
+
+      const blacklist = [127]
+      const lines = []
+      let w = 0
+      let index = 0
+
+      for (var i = 0; i < words.length; i++) {
+        const line = []
+
+        let tokens = []
+        for (var j = 0; j < words[i].length; j++) {
+            let c1 = words[i].substr(j, 1)
+            
+            let c2 = ''
+            if(j < words[i].length-1){
+                c2 = words[i].substr(j+1, 1)
+            }
+            
+            const code1 = words[i].charCodeAt(j)
+            let code2 = 0
+            
+            if(j < words[i].length-1){
+                code2 = words[i].charCodeAt(j+1)
+            }
+            
+            if (code1 < 33 || blacklist.includes(code1)) {
+                c1 = ''
+            }
+            if (code2 < 33 || blacklist.includes(code2)) {
+                c2 = ''
+            }
+            
+            if(this.titleFamily.startsWith('Brandmark') && (c1 == '~' || c1 == '^' || c2 == '_')){
+                tokens.push(c1+c2);
+                j++;
+            }
+            else if(this.titleFamily.startsWith('Brandmark') && (c1 == '(' && j+3 < words[i].length && words[i].substr(j+3, 1) == ')')){ // ligature
+                tokens.push(c1+c2+words[i].substr(j+2, 2));
+                j+=3;
+            }
+            else{
+                if(c1){
+                    tokens.push(c1);
+                }
+            }
+        }
+                        
+        for (var j = 0; j < tokens.length; j++) {
+          const c = tokens[j]
+          const character = chars.shift()
+          if (!character) {
+            continue
+          }
+          character.letter = c
+          line.push(character)
+        }
+
+        const wordwidth = getwordwidth(line, scale, letterspacing)
+
+        if (lines.length == 0 || (index - 1 >= 0 && input[index - 1] === '\n')) {
+          lines.push(line)
+          w = wordwidth
+        } else if (line.length > 0) {
+          if (w + (line[0].kerning + letterspacing) * scale + wordwidth > bounds.width) {
+            lines.push(line)
+            w = wordwidth
+          } else {
+            lines[lines.length - 1] = lines[lines.length - 1].concat(line)
+            w += (line[0].kerning + letterspacing) * scale + wordwidth
+          }
+        }
+
+        index += words[i].length + 1
+      }
+
+
+      let { y } = bounds
+
+      // offset all characters to top of svg
+      let offsety = 0
+      if (lines && lines[0] && lines[0].length > 0) {
+        offsety = lines[0][0].y
+      }
+      for (i = 0; i < lines.length; i++) {
+        for (j = 0; j < lines[i].length; j++) {
+          if (lines[i][j].y < offsety) {
+            offsety = lines[i][j].y
+          }
+        }
+      }
+
+      // keep track of bounds and elements
+      let minx = 1024
+      let miny = 768
+
+      let maxx = 0
+      let maxy = 0
+
+      for (i = 0; i < lines.length; i++) {
+        let { x } = bounds
+
+        if (align == 'center') {
+          x = bounds.x + (bounds.width - getwordwidth(lines[i], scale, letterspacing)) / 2
+        } else if (align == 'right') {
+          x = bounds.x + (bounds.width - getwordwidth(lines[i], scale, letterspacing))
+        }
+
+        if (x < minx) {
+          minx = x
+        }
+
+        let maxheight = 0
+        for (j = 0; j < lines[i].length; j++) {
+          const letter = lines[i][j]
+
+          if (j > 0 && letter.kerning && typeof letter.kerning !== 'undefined') {
+            x += (letter.kerning + parseFloat(letterspacing)) * scale
+          }
+
+          // svg applies rightmost transform first!
+          
+          if(letter.id != 'icon' || !this.iconContainer || !this.showIconContainer){
+              $(this.$el).find(`#${letter.id}`).attr('transform',`translate(${x} ${y + letter.y * scale - offsety}) scale(${scale}) translate(${-letter.x} ${-letter.y})`);
+              
+          }
+          else{
+              $(this.$el).find('#icon').attr('transform',`translate(${x} ${y + letter.y * scale - offsety}) scale(${scale}) translate(${(letter.width-letter.icon_width)/2 -letter.x} ${-letter.y})`);
+              $(this.$el).find('#icon_container').attr('transform',`translate(${x} ${y + letter.y * scale - offsety}) scale(${scale}) translate(${-letter.x} ${-letter.y})`);
+          }
+                    
+          x += letter.width * scale
+
+          if (letter.height * scale > maxheight) {
+            maxheight = letter.height * scale
+          }
+
+          if (y + letter.y * scale - offsety < miny) {
+            miny = y + letter.y * scale - offsety
+          }
+          if (y + letter.y * scale - offsety + letter.height * scale > maxy) {
+            maxy = y + letter.y * scale - offsety + letter.height * scale
+          }
+          if (x > maxx) {
+            maxx = x
+          }
+        }
+
+        y += maxheight * linespacing
+      }
+
+      return {
+        bounds: { x: minx, y: miny, width: maxx - minx, height: maxy - miny },
+        lines,
+      }
+    },
+    distribute(items, spacing, globalbounds) {
+      if (!globalbounds) {
+        globalbounds = { x: 0, y: 0, width: 1024, height: 768 };
+      }
+
+      // overall bounds and center
+      let height = 0;
+
+      for (var i = 0; i < items.length; i++) {
+        height += items[i].bounds.height;
+
+        if (i > 0 && items[i].bounds.height > 0) {
+          height += spacing[i - 1];
+        }
+      }
+
+      let y = globalbounds.y + (globalbounds.height - height) / 2;
+
+
+      for (i = 0; i < items.length; i++) {
+        const offset = y - items[i].bounds.y;
+        let offsetx = 0;
+        if (i > 0) {
+          if (items[i].align == 'left') {
+            offsetx = items[i - 1].bounds.x - items[i].bounds.x;
+          } else if (items[i].align == 'right') {
+            offsetx =
+              items[i - 1].bounds.x +
+              items[i - 1].bounds.width -
+              (items[i].bounds.x + items[i].bounds.width);
+          } else {
+            offsetx =
+              items[i - 1].bounds.x +
+              items[i - 1].bounds.width / 2 -
+              (items[i].bounds.x + items[i].bounds.width / 2);
+          }
+        }
+        items[i].bounds.x += offsetx;
+
+        for (let j = 0; j < items[i].lines.length; j++) {
+          for (let k = 0; k < items[i].lines[j].length; k++) {
+            const letter = items[i].lines[j][k];
+            // regular text flow
+            let el = $(this.$el).find(`#${letter.id}`);
+            let existing = el.attr('transform');
+            if (!existing) {
+              existing = '';
+            }
+
+            el.attr('transform', `translate(${offsetx} ${offset}) ${existing}`);
+            if(letter.id == 'icon' && this.iconContainer && this.showIconContainer){
+                // position icon container
+                el = $(this.$el).find('#icon_container');
+                existing = el.attr('transform');
+                if (!existing) {
+                  existing = '';
+                }
+                el.attr('transform', `translate(${offsetx} ${offset}) ${existing}`);
+            }
+          }
+        }
+
+        y += items[i].bounds.height;
+        if (i < spacing.length) {
+          y += spacing[i];
+        }
+      }
+    },
+    colorImage(element, img, rgb) {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      const imgData = ctx.getImageData(0, 0, img.width, img.height);
+      const { data } = imgData;
+
+      for (let j = 0; j < data.length; j += 4) {
+        data[j] = rgb.r;
+        data[j + 1] = rgb.g;
+        data[j + 2] = rgb.b;
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+
+      const base64 = canvas.toDataURL();
+
+      const e = element.get(0);
+      if (e) {
+        e.setAttribute('xlink:href', base64);
+      }
+    }
+  }
+});

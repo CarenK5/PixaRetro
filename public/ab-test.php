@@ -1,0 +1,1 @@
+window.brandmark_version = 'v3';
