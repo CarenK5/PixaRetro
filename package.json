@@ -8,9 +8,13 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@langchain/core": "^0.1.x",
+    "@langchain/openai": "^0.0.x",
+    "axios": "^1.6.x",
     "cors": "^2.8.0",
     "dotenv": "^16.0.0",
     "express": "^4.19.0",
+    "langchain": "^0.1.x",
     "mongoose": "^8.6.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

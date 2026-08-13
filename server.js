@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const { matchPhotographersToClient } = require('./src/matching.js');
 require('dotenv').config();
 
 const app = express();
@@ -148,6 +149,26 @@ app.put('/api/storage/:key', async (req, res) => {
   storageData[key] = req.body;
   saveStorageData();
   res.json({ ok: true });
+});
+
+app.post('/api/match', async (req, res) => {
+  try {
+    if (!process.env.NVIDIA_API_KEY) {
+      return res.status(400).json({ error: 'NVIDIA_API_KEY not configured' });
+    }
+
+    const { clientProfile, photographers } = req.body;
+
+    if (!clientProfile || !photographers) {
+      return res.status(400).json({ error: 'Missing clientProfile or photographers' });
+    }
+
+    const matches = await matchPhotographersToClient(clientProfile, photographers);
+    res.json(matches);
+  } catch (error) {
+    console.error('Matching error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 const publicDir = path.join(__dirname, 'public');
