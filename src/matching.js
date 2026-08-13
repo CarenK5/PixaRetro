@@ -34,13 +34,14 @@ async function matchPhotographersToClient(clientProfile, photographers) {
     const response = await axios.post(
       NVIDIA_API_URL,
       {
-        model: "meta/llama-2-70b-chat",
+        model: "z-ai/glm-5.2",
         messages: [
           { role: "user", content: prompt }
         ],
-        temperature: 0.7,
-        top_p: 0.7,
-        max_tokens: 1024
+        temperature: 1,
+        top_p: 1,
+        max_tokens: 16384,
+        seed: 42
       },
       {
         headers: {
@@ -61,4 +62,62 @@ async function matchPhotographersToClient(clientProfile, photographers) {
   }
 }
 
-module.exports = { matchPhotographersToClient };
+// Streaming version for real-time responses
+async function* matchPhotographersToClientStream(clientProfile, photographers) {
+  try {
+    if (!process.env.NVIDIA_API_KEY) {
+      throw new Error('NVIDIA_API_KEY environment variable is not set');
+    }
+
+    const prompt = await matchingPromptTemplate.format({
+      clientProfile: JSON.stringify(clientProfile, null, 2),
+      photographers: JSON.stringify(photographers, null, 2),
+    });
+
+    const response = await axios.post(
+      NVIDIA_API_URL,
+      {
+        model: "z-ai/glm-5.2",
+        messages: [
+          { role: "user", content: prompt }
+        ],
+        stream: true,
+        temperature: 1,
+        top_p: 1,
+        max_tokens: 16384,
+        seed: 42
+      },
+      {
+        headers: {
+          "Authorization": `Bearer ${process.env.NVIDIA_API_KEY}`,
+          "Accept": "application/json"
+        },
+        responseType: 'stream'
+      }
+    );
+
+    for await (const chunk of response.data) {
+      const lines = chunk.toString().split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.replace('data: ', '');
+          if (data && data !== '[DONE]') {
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.choices?.[0]?.delta?.content) {
+                yield parsed.choices[0].delta.content;
+              }
+            } catch (e) {
+              // Skip parse errors for stream data
+            }
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Streaming error:", error.response?.data || error.message);
+    throw error;
+  }
+}
+
+module.exports = { matchPhotographersToClient, matchPhotographersToClientStream };

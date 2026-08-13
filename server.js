@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
-const { matchPhotographersToClient } = require('./src/matching.js');
+const { matchPhotographersToClient, matchPhotographersToClientStream } = require('./src/matching.js');
 require('dotenv').config();
 
 const app = express();
@@ -167,6 +167,33 @@ app.post('/api/match', async (req, res) => {
     res.json(matches);
   } catch (error) {
     console.error('Matching error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/match/stream', async (req, res) => {
+  try {
+    if (!process.env.NVIDIA_API_KEY) {
+      return res.status(400).json({ error: 'NVIDIA_API_KEY not configured' });
+    }
+
+    const { clientProfile, photographers } = req.body;
+
+    if (!clientProfile || !photographers) {
+      return res.status(400).json({ error: 'Missing clientProfile or photographers' });
+    }
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    for await (const chunk of matchPhotographersToClientStream(clientProfile, photographers)) {
+      res.write(`data: ${chunk}\n\n`);
+    }
+
+    res.end();
+  } catch (error) {
+    console.error('Streaming error:', error);
     res.status(500).json({ error: error.message });
   }
 });
