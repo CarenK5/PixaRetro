@@ -18,7 +18,6 @@ PixaRetro is building a full-stack web application to connect clients with creat
 - Portfolio browsing and search
 - Booking and request workflows
 - Profile management
-- Local development data persistence
 
 ## 🛠️ Tech Stack
 
@@ -32,41 +31,55 @@ PixaRetro is building a full-stack web application to connect clients with creat
 
 **Infrastructure:**
 - Docker & Docker Compose
-- Local development storage
+- MongoDB (planned)
+- JWT Authentication (planned)
 
-## Project Structure
+## Getting Started
 
-```text
-pixaretro-local/
-├── public/
-│   └── index.html
-├── server.js
-├── package.json
-├── README.md
-└── ...
+### Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- Docker (optional)
 
-pixaretro-backend/
-├── server.js
-├── data/
-├── package.json
-└── ...
-```
+### Installation & Development
 
-## Run locally
-
-1. Open a terminal in the frontend folder:
-
+1. Clone the repository:
 ```bash
-\npm install
-node server.js
+git clone https://github.com/CarenK5/PixaRetro.git
+cd pixaretro-local
 ```
 
-2. Open a second terminal in the backend folder:
-
+2. Install dependencies:
 ```bash
 npm install
-node server.js
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. (Optional) Run with Docker:
+```bash
+docker-compose up
+```
+
+## Contributing
+
+We're actively building this platform. Contributions are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## Roadmap
+
+- [ ] Production-ready database integration
+- [ ] Advanced matching algorithm
+- [ ] Payment processing
+- [ ] Rating and review system
+- [ ] Android app (React Native)
+- [ ] iOS app (React Native)
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details
 
 3. Open the app in a browser:
 
