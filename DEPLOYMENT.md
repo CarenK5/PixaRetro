@@ -24,10 +24,10 @@
 4. Select `CarenK5/PixaRetro` repository
 5. Add environment variables (from Supabase):
    ```
-   SUPABASE_URL=your_url
-   SUPABASE_ANON_KEY=your_key
-   SUPABASE_SERVICE_KEY=your_service_key
-   NVIDIA_API_KEY=your_nvidia_key
+   SUPABASE_URL=your_supabase_url_here
+   SUPABASE_ANON_KEY=your_anon_key_here
+   SUPABASE_SERVICE_KEY=your_service_key_here
+   NVIDIA_API_KEY=your_nvidia_key_here
    NODE_ENV=production
    ```
 
