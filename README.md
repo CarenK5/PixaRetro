@@ -77,28 +77,12 @@ We're actively building this platform. Contributions are welcome! Please see our
 - [ ] Android app (React Native)
 - [ ] iOS app (React Native)
 
+## Security
+
+- Environment variables should be used for sensitive configuration (API keys, database credentials, etc.)
+- Never commit `.env` files or secrets to version control
+- Use authentication tokens and JWT for API requests in production
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details
-
-3. Open the app in a browser:
-
-```text
-http://localhost:3000/
-```
-
-## Notes
-
-- The app is intended for local development and demo use.
-- Sensitive configuration and deployment details should not be included in shared documentation.
-- If a database or external API is later added, credentials should be stored securely in environment variables and not committed to source control.
-
-## Development Notes
-
-- The frontend serves the landing page and app shell.
-- The backend provides data access and persistence layer support.
-- When external services are unavailable, the app can run with safe demo/in-memory fallback data.
-
-## License
-
-This project is for local development and demonstration purposes only.
