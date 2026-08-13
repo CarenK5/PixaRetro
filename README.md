@@ -1,34 +1,38 @@
 # PixaRetro
 
-PixaRetro is a local web app for booking photographers and videographers on demand. The project includes a landing page, account flow, portfolio browsing, matching/search experience, and a lightweight local backend for development use.
+**On-demand booking platform for photographers and videographers**
 
-## Overview
+PixaRetro is building a full-stack web application to connect clients with creative professionals. The project roadmap includes a production-ready webapp, followed by native Android and iOS mobile apps.
 
-This project was built as a functional prototype to demonstrate:
+## 🎯 Project Vision
 
-- a marketing-style landing page
-- client and pro onboarding flows
-- profile and portfolio browsing
-- booking / request workflows
-- local persistence for demo data
+- **Phase 1**: Full-featured web application
+- **Phase 2**: Android app
+- **Phase 3**: iOS app
 
-## Features
+## ✨ Current Features
 
 - Responsive landing page and hero sections
-- Sign up and log in flow
-- Client dashboard
-- Pro dashboard
-- Explore and search for creators
-- Portfolio and request management
-- Local file-based or in-memory data fallback for easy testing
+- Sign up and login flows (client & pro)
+- Client and pro dashboards
+- Portfolio browsing and search
+- Booking and request workflows
+- Profile management
+- Local development data persistence
 
-## Tech Stack
+## 🛠️ Tech Stack
 
+**Frontend:**
+- React + Vite
 - HTML, CSS, JavaScript
+
+**Backend:**
 - Node.js
-- Express
-- Local static file serving
-- Lightweight demo storage layer
+- Express.js
+
+**Infrastructure:**
+- Docker & Docker Compose
+- Local development storage
 
 ## Project Structure
 
