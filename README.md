@@ -53,15 +53,13 @@ pixaretro-backend/
 1. Open a terminal in the frontend folder:
 
 ```bash
-cd C:\Users\id40063857\Downloads\pixaretro-local
-npm install
+\npm install
 node server.js
 ```
 
 2. Open a second terminal in the backend folder:
 
 ```bash
-cd C:\Users\id40063857\Downloads\pixaretro-backend
 npm install
 node server.js
 ```
