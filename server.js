@@ -27,6 +27,12 @@ const creatorSchema = new mongoose.Schema({
 
 const Creator = mongoose.models.Creator || mongoose.model('Creator', creatorSchema);
 
+const storageSchema = new mongoose.Schema({
+  key: { type: String, unique: true, required: true },
+  value: mongoose.Schema.Types.Mixed
+}, { timestamps: true });
+const Storage = mongoose.models.Storage || mongoose.model('Storage', storageSchema);
+
 async function connectToDatabase() {
   if (!process.env.MONGODB_URI) {
     console.warn('No MONGODB_URI set. Running with in-memory demo data.');
@@ -106,20 +112,39 @@ function saveStorageData() {
 
 loadStorageData();
 
-app.get('/api/storage', (req, res) => {
+app.get('/api/storage', async (req, res) => {
   const prefix = req.query.prefix || '';
+
+  if (mongoConnected) {
+    const regex = new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const docs = await Storage.find({ key: { $regex: regex } }).select('key').lean();
+    return res.json(docs.map((doc) => doc.key));
+  }
+
   const keys = Object.keys(storageData).filter((key) => key.startsWith(prefix));
   res.json(keys);
 });
 
-app.get('/api/storage/:key', (req, res) => {
+app.get('/api/storage/:key', async (req, res) => {
   const key = decodeURIComponent(req.params.key);
+
+  if (mongoConnected) {
+    const doc = await Storage.findOne({ key }).lean();
+    return res.json({ key, value: doc ? doc.value : null });
+  }
+
   const value = key in storageData ? storageData[key] : null;
   res.json({ key, value });
 });
 
-app.put('/api/storage/:key', (req, res) => {
+app.put('/api/storage/:key', async (req, res) => {
   const key = decodeURIComponent(req.params.key);
+
+  if (mongoConnected) {
+    await Storage.updateOne({ key }, { key, value: req.body }, { upsert: true });
+    return res.json({ ok: true });
+  }
+
   storageData[key] = req.body;
   saveStorageData();
   res.json({ ok: true });
